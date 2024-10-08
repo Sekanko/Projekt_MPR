@@ -35,4 +35,12 @@ public class MyRestController {
     public void delete(@PathVariable int id){
         this.computerService.deleteComputer(id);
     }
+
+    @PutMapping("computer/put/{id}")
+    public void update(@PathVariable int id, @RequestBody Computer updatedComputer){
+
+        if(this.computerService.getComputer(id) != null){
+            this.computerService.updateData(id,updatedComputer);
+        }
+    }
 }

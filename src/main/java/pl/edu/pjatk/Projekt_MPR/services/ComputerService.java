@@ -32,4 +32,9 @@ public class ComputerService {
     public Computer getComputer(int id) {
         return this.computerList.get(id);
     }
+
+    public void updateData(int id ,Computer updatedComputer) {
+        computerList.get(id).setName(updatedComputer.getName());
+        computerList.get(id).setComputerCaseModel(updatedComputer.getComputerCaseModel());
+    }
 }
