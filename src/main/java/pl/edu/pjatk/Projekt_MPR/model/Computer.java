@@ -24,4 +24,6 @@ public class Computer {
     public void setComputerCaseModel(String computerCaseModel) {
         this.computerCaseModel = computerCaseModel;
     }
+
+
 }

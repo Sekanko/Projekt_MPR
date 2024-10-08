@@ -1,10 +1,7 @@
 package pl.edu.pjatk.Projekt_MPR.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.edu.pjatk.Projekt_MPR.model.Computer;
 import pl.edu.pjatk.Projekt_MPR.services.ComputerService;
 
@@ -27,5 +24,10 @@ public class MyRestController {
     @PostMapping("computer")
     public void create(@RequestBody Computer computer){
         this.computerService.createComputer(computer);
+    }
+
+    @DeleteMapping("computer/delete/{id}")
+    public void delete(@PathVariable int id){
+        this.computerService.deleteComputer(id);
     }
 }

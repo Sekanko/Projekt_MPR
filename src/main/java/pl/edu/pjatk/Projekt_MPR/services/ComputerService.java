@@ -22,4 +22,10 @@ public class ComputerService {
     public void createComputer(Computer computer) {
         this.computerList.add(computer);
     }
+
+    public void deleteComputer(int id) {
+        if (id >=0 && id < this.computerList.size()) {
+            this.computerList.remove(id);
+        }
+    }
 }
