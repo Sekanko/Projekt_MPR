@@ -21,6 +21,11 @@ public class MyRestController {
         return computerService.getAll();
     }
 
+    @GetMapping("computer/get/{id}")
+    public Computer getComputer(@PathVariable int id) {
+        return this.computerService.getComputer(id);
+    }
+
     @PostMapping("computer")
     public void create(@RequestBody Computer computer){
         this.computerService.createComputer(computer);

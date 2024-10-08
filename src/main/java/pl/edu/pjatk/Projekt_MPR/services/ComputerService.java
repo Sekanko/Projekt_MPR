@@ -28,4 +28,8 @@ public class ComputerService {
             this.computerList.remove(id);
         }
     }
+
+    public Computer getComputer(int id) {
+        return this.computerList.get(id);
+    }
 }
