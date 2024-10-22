@@ -40,17 +40,6 @@ public class ComputerService {
         return computer.orElse(null);
     }
 
-    public void updateData(Long id ,Computer updatedComputer) {
-        Computer computer = computerRepository.findById(id).get();
-
-        if (updatedComputer != null) {
-            computer.setName(updatedComputer.getName());
-            computer.setComputerCaseModel(updatedComputer.getComputerCaseModel());
-            computer.setCalcId(computer.calcualteId());
-
-            computerRepository.save(computer);
-        }
-    }
 
     public List<Computer> getComputerByName(String name) {
         return this.computerRepository.findByName(name);

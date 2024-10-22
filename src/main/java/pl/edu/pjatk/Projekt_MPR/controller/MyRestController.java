@@ -46,10 +46,6 @@ public class MyRestController {
         this.computerService.deleteComputer(id);
     }
 
-    @PutMapping("computer/put/{id}")
-    public void update(@PathVariable Long id, @RequestBody Computer updatedComputer){
-        this.computerService.updateData(id, updatedComputer);
-    }
 
     @PatchMapping("computer/patch/{id}")
     public void patch(@PathVariable Long id, @RequestBody Map<String, Object> patch){
