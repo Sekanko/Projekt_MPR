@@ -1,5 +1,9 @@
 package pl.edu.pjatk.Projekt_MPR.service;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.stereotype.Service;
 import pl.edu.pjatk.Projekt_MPR.exception.ComputerFieldDoesntExistsException;
 import pl.edu.pjatk.Projekt_MPR.exception.ComputerNewFieldValueIsEmptyException;
@@ -8,6 +12,9 @@ import pl.edu.pjatk.Projekt_MPR.exception.ComputerTakenCalculatedIdException;
 import pl.edu.pjatk.Projekt_MPR.model.Computer;
 import pl.edu.pjatk.Projekt_MPR.repository.ComputerRepository;
 
+import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 
 @Service
@@ -109,6 +116,63 @@ public class ComputerService {
         }
 
         computerRepository.save(computer);
+    }
+
+    public byte[] getInfo(Long id) {
+        Computer computer = getComputer(id);
+        try (PDDocument infoPDF = new PDDocument()){
+            PDPage page = new PDPage();
+            infoPDF.addPage(page);
+
+            PDPageContentStream contentStream = new PDPageContentStream(infoPDF,page);
+            contentStream.beginText();
+            contentStream.setLeading(14.5f);
+            contentStream.newLineAtOffset(50, 750);
+
+            for (Field field : Computer.class.getDeclaredFields()){
+                field.setAccessible(true);
+                String fieldName = field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
+                Method getter = Computer.class.getDeclaredMethod("get" + fieldName);
+
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+                contentStream.showText(stringToSave(fieldName) + ":");
+                contentStream.newLine();
+                contentStream.setFont(PDType1Font.HELVETICA, 12);
+                contentStream.showText(getter.invoke(computer).toString());
+                contentStream.newLine();
+
+                contentStream.newLine();
+                field.setAccessible(false);
+            }
+
+            contentStream.endText();
+            contentStream.close();
+
+            ByteArrayOutputStream result = new ByteArrayOutputStream();
+            infoPDF.save(result);
+
+            return result.toByteArray();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String stringToSave(String string){
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (char c : string.toCharArray()){
+            if (c == string.charAt(0)) {
+                stringBuilder.append(c);
+            } else if (Character.isUpperCase(c)){
+                stringBuilder.append(' ');
+                stringBuilder.append(Character.toLowerCase(c));
+            } else {
+                stringBuilder.append(c);
+            }
+        }
+
+        return stringBuilder.toString();
     }
 
     private List<Computer> view(List<Computer> list){

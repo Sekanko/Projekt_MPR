@@ -1,8 +1,7 @@
 package pl.edu.pjatk.Projekt_MPR.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pjatk.Projekt_MPR.model.Computer;
 import pl.edu.pjatk.Projekt_MPR.service.ComputerService;
@@ -36,6 +35,26 @@ public class MyRestController {
     @GetMapping("computer/get/computerCaseModel/{computerCaseModel}")
     public ResponseEntity<List<Computer>> getComputerCaseModel(@PathVariable String computerCaseModel) {
         return new ResponseEntity<>(this.computerService.getComputerByComputerCaseModel(computerCaseModel), HttpStatus.OK);
+    }
+    @GetMapping("computer/get/info/{id}")
+    public ResponseEntity<byte[]> getInfo(@PathVariable Long id) {
+        try{
+            byte[] pdf = this.computerService.getInfo(id);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDisposition(ContentDisposition.builder("inline")
+                    .filename("computer_info_" + id + ".pdf")
+                    .build());
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(pdf);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     @PostMapping("computer")
