@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.util.Objects;
+
 @Entity
 public class Computer {
     @Id
@@ -17,7 +19,7 @@ public class Computer {
     public Computer(String name, String computerCaseModel) {
         this.name = name;
         this.computerCaseModel = computerCaseModel;
-        this.calcId = calcualteId();
+        setCalcId();
     }
 
     public Computer() {
@@ -32,8 +34,13 @@ public class Computer {
         return calcId;
     }
 
-    public void setCalcId(int calcId) {
-        this.calcId = calcId;
+    public void setCalcId(){
+        String merged = this.name + this.computerCaseModel;
+        int sum = 0;
+        for (Character c : merged.toCharArray()) {
+            sum += Character.getNumericValue(c);
+        }
+        this.calcId = sum;
     }
 
     public String getName() {
@@ -42,7 +49,7 @@ public class Computer {
 
     public void setName(String name) {
         this.name = name;
-        this.calcId = calcualteId();
+        setCalcId();
     }
 
     public String getComputerCaseModel() {
@@ -51,17 +58,19 @@ public class Computer {
 
     public void setComputerCaseModel(String computerCaseModel) {
         this.computerCaseModel = computerCaseModel;
-        this.calcId = calcualteId();
+        setCalcId();
     }
 
-    public int calcualteId(){
-        String merged = this.name + this.computerCaseModel;
-        int sum = 0;
-        for (Character c : merged.toCharArray()) {
-            sum += Character.getNumericValue(c);
-        }
-        return sum;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Computer computer = (Computer) o;
+        return calcId == computer.calcId && Objects.equals(id, computer.id) && Objects.equals(name, computer.name) && Objects.equals(computerCaseModel, computer.computerCaseModel);
     }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, computerCaseModel, calcId);
+    }
 }

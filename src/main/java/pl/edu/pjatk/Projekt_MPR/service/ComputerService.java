@@ -11,6 +11,7 @@ import pl.edu.pjatk.Projekt_MPR.repository.ComputerRepository;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -37,9 +38,9 @@ public class ComputerService {
     public void createComputer(Computer computer) {
         computer.setName(stringUtilsService.upper(computer.getName()));
         computer.setComputerCaseModel(stringUtilsService.upper(computer.getComputerCaseModel()));
-        computer.setCalcId(computer.calcualteId());
+        computer.setCalcId();
 
-        if (isCalculatedIdTaken(computer.getCalcId())) {
+        if (isCalculatedIdTaken(computer.getCalcId(), computer)) {
             throw new ComputerTakenCalculatedIdException();
         }
 
@@ -47,11 +48,11 @@ public class ComputerService {
     }
 
     public void deleteComputer(Long id) {
-        if (computerRepository.findById(id).isEmpty()){
-            throw new ComputerNoFoundException();
+        if (this.computerRepository.existsById(id)) {
+            this.computerRepository.deleteById(id);
+        } else {
+            throw  new ComputerNoFoundException();
         }
-
-        this.computerRepository.deleteById(id);
     }
 
     public Computer getComputer(Long id) {
@@ -91,25 +92,34 @@ public class ComputerService {
 
         Computer computer = optionalComputer.get();
 
-        patch.forEach((key, value) -> {
-            if (value == "" || value == null){
+        var fieldNames = Arrays.stream(Computer.class
+                .getDeclaredFields())
+                .filter(field -> !field.getName().equals("id") && !field.getName().equals("calcId"))
+                .toList();
+
+
+        patch.forEach((fieldName, fieldNewValue) -> {
+            if (fieldNewValue == "" || fieldNewValue == null){
                 throw new ComputerNewFieldValueIsEmptyException();
             }
-            switch (key) {
-                case "name":
-                    computer.setName((String) value);
-                    break;
-                case "computerCaseModel":
-                    computer.setComputerCaseModel((String) value);
-                    break;
-                default:
-                    throw new ComputerFieldDoesntExistsException();
+
+            boolean fieldExists = fieldNames.stream()
+                    .anyMatch(field -> field.getName().equals(fieldName));
+
+            if (fieldExists){
+                try {
+                    String setterName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+                    Method setter = computer.getClass().getDeclaredMethod(setterName, fieldNewValue.getClass());
+                    setter.invoke(computer, fieldNewValue);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
-        computer.setCalcId(computer.calcualteId());
+        computer.setCalcId();
 
-        if (isCalculatedIdTaken(computer.getCalcId())) {
+        if (isCalculatedIdTaken(computer.getCalcId(), computer)) {
             throw new ComputerTakenCalculatedIdException();
         }
 
@@ -182,11 +192,9 @@ public class ComputerService {
         return list;
     }
 
-    private boolean isCalculatedIdTaken(int calcId){
+    private boolean isCalculatedIdTaken(int calcId, Computer currentComputer) {
         List<Computer> computers = (ArrayList <Computer>) computerRepository.findAll();
-        return !computers.stream()
-                .filter(computer -> computer.getCalcId() == calcId)
-                .toList()
-                .isEmpty();
+        return computers.stream()
+                .anyMatch(computer -> !computer.equals(currentComputer) && computer.getCalcId() == calcId);
     }
 }
