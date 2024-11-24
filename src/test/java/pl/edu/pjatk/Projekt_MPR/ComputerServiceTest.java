@@ -1,5 +1,7 @@
 package pl.edu.pjatk.Projekt_MPR;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -8,10 +10,13 @@ import pl.edu.pjatk.Projekt_MPR.repository.ComputerRepository;
 import pl.edu.pjatk.Projekt_MPR.service.ComputerService;
 import pl.edu.pjatk.Projekt_MPR.service.StringUtilsService;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -31,6 +36,7 @@ public class ComputerServiceTest {
     public void createSetsComputerToUpperCase(){
         Computer computer = new Computer("name","case");
         this.service.createComputer(computer);
+        System.out.println(computer.getId());
 
         verify(stringUtilsService,times(2)).upper(any());
         verify(computerRepository,times(4)).save(any());
@@ -70,6 +76,39 @@ public class ComputerServiceTest {
         service.getComputerByComputerCaseModel(computer2.getComputerCaseModel());
 
         verify(stringUtilsService,times(4)).lowerExceptFirst(any());
+    }
+
+    @Test void getInfoOfComputerInPDF(){
+        Computer computer = new Computer("SIN","SIN");
+
+        try {
+            Field idField = Computer.class.getDeclaredField("id");
+            idField.setAccessible(true);
+            idField.set(computer, 1L);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        when(computerRepository.findById(1L)).thenReturn(Optional.of(computer));
+        when(stringUtilsService.lowerExceptFirst(any())).thenReturn("Sin");
+
+        byte[] testPDFInBytes = this.service.getInfo(1L);
+        assertNotNull(testPDFInBytes);
+
+
+        try (PDDocument testPDF = PDDocument.load(testPDFInBytes)){
+            assertEquals(1, testPDF.getNumberOfPages());
+            PDFTextStripper stripper = new PDFTextStripper();
+            String content = stripper.getText(testPDF);
+            String compareString = "Id:\n1\nName:\nSin\nComputerCase model:\nSin\nCalc id:\n138\n";
+            assertEquals(compareString, content);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
 

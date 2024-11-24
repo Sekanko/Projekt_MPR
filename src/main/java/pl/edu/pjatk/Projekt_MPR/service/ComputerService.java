@@ -5,14 +5,12 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.stereotype.Service;
-import pl.edu.pjatk.Projekt_MPR.exception.ComputerFieldDoesntExistsException;
-import pl.edu.pjatk.Projekt_MPR.exception.ComputerNewFieldValueIsEmptyException;
-import pl.edu.pjatk.Projekt_MPR.exception.ComputerNoFoundException;
-import pl.edu.pjatk.Projekt_MPR.exception.ComputerTakenCalculatedIdException;
+import pl.edu.pjatk.Projekt_MPR.exception.*;
 import pl.edu.pjatk.Projekt_MPR.model.Computer;
 import pl.edu.pjatk.Projekt_MPR.repository.ComputerRepository;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -140,8 +138,8 @@ public class ComputerService {
                 contentStream.setFont(PDType1Font.HELVETICA, 12);
                 contentStream.showText(getter.invoke(computer).toString());
                 contentStream.newLine();
-
                 contentStream.newLine();
+
                 field.setAccessible(false);
             }
 
@@ -152,10 +150,11 @@ public class ComputerService {
             infoPDF.save(result);
 
             return result.toByteArray();
+        } catch (IOException e){
+            throw new ComputerPDFInfoWasntCreatedException();
         } catch (Exception e){
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
     private String stringToSave(String string){
