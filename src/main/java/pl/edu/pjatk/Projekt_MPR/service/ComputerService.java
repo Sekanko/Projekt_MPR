@@ -36,8 +36,6 @@ public class ComputerService {
     }
 
     public void createComputer(Computer computer) {
-        computer.setName(stringUtilsService.upper(computer.getName()));
-        computer.setComputerCaseModel(stringUtilsService.upper(computer.getComputerCaseModel()));
         saveComputer(computer);
     }
 
@@ -177,23 +175,20 @@ public class ComputerService {
     }
 
     private void saveComputer (Computer computer) {
-        Arrays.stream(computer.getClass().getDeclaredFields())
-                .filter(field -> field.getType().equals(String.class))
-                        .forEach(field -> {
-                            try {
-                                field.setAccessible(true);
-                                String fieldNewValue = String.valueOf(field.get(computer));
+        for (Field field : computer.getClass().getDeclaredFields()) {
+            if (field.getType().equals(String.class)) {
+                try {
+                    field.setAccessible(true);
 
-                                if (fieldNewValue == null){
-                                    throw new ComputerNewFieldValueIsEmptyException();
-                                }
+                    String fieldNewValue = this.stringUtilsService.upper(String.valueOf(field.get(computer)));
+                    computerSetterByFieldName(field.getName(), fieldNewValue, computer);
 
-                                computerSetterByFieldName(field.getName(), fieldNewValue, computer);
-                                field.setAccessible(false);
-                            } catch (IllegalAccessException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
+                    field.setAccessible(false);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
         computer.setCalcId();
 
@@ -217,6 +212,5 @@ public class ComputerService {
         } catch (Exception e){
             e.printStackTrace();
         }
-
     }
 }

@@ -5,6 +5,8 @@ import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import pl.edu.pjatk.Projekt_MPR.exception.ComputerFieldDoesntExistsException;
+import pl.edu.pjatk.Projekt_MPR.exception.ComputerNewFieldValueIsEmptyException;
 import pl.edu.pjatk.Projekt_MPR.model.Computer;
 import pl.edu.pjatk.Projekt_MPR.repository.ComputerRepository;
 import pl.edu.pjatk.Projekt_MPR.service.ComputerService;
@@ -12,9 +14,7 @@ import pl.edu.pjatk.Projekt_MPR.service.StringUtilsService;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -27,14 +27,16 @@ public class ComputerServiceTest {
 
     @BeforeEach
     public void setUp(){
-        this.stringUtilsService = Mockito.mock(StringUtilsService.class);
-        this.computerRepository = Mockito.mock(ComputerRepository.class);
+        this.stringUtilsService = mock(StringUtilsService.class);
+        this.computerRepository = mock(ComputerRepository.class);
         this.service = new ComputerService(computerRepository, stringUtilsService);
     }
 
     @Test
     public void createSetsComputerToUpperCase(){
-        Computer computer = new Computer("name","case");
+        Computer computer = new Computer("lol","case");
+
+        when(stringUtilsService.upper(any())).thenReturn("upperWorks");
         this.service.createComputer(computer);
 
         verify(stringUtilsService,times(2)).upper(any());
@@ -77,8 +79,9 @@ public class ComputerServiceTest {
         verify(stringUtilsService,times(4)).lowerExceptFirst(any());
     }
 
-    @Test void getInfoOfComputerInPDF(){
-        Computer computer = new Computer("SIN","SIN");
+    @Test
+    public void getInfoOfComputerInPDF(){
+        Computer computer = new Computer("SIN","COS");
 
         try {
             Field idField = Computer.class.getDeclaredField("id");
@@ -88,24 +91,62 @@ public class ComputerServiceTest {
             e.printStackTrace();
         }
 
-
         when(computerRepository.findById(1L)).thenReturn(Optional.of(computer));
-        when(stringUtilsService.lowerExceptFirst(any())).thenReturn("Sin");
+        when(stringUtilsService.lowerExceptFirst("SIN")).thenReturn("Sin");
+        when(stringUtilsService.lowerExceptFirst("COS")).thenReturn("Cos");
 
         byte[] testPDFInBytes = this.service.getInfo(1L);
         assertNotNull(testPDFInBytes);
-
 
         try (PDDocument testPDF = PDDocument.load(testPDFInBytes)){
             assertEquals(1, testPDF.getNumberOfPages());
             PDFTextStripper stripper = new PDFTextStripper();
             String content = stripper.getText(testPDF);
-            String compareString = "Id:\n1\nName:\nSin\nComputerCase model:\nSin\nCalc id:\n138\n";
+            String compareString = "Id:\n1\nName:\nSin\nComputerCase model:\nCos\nCalc id:\n133\n";
             assertEquals(compareString, content);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
+    @Test
+    public void patchComputerWithCorrectValues(){
+        Computer computer = new Computer("SIN","COS");
+
+        when(computerRepository.findById(1L)).thenReturn(Optional.of(computer));
+        when(stringUtilsService.upper("tg")).thenReturn("TG");
+        when(stringUtilsService.upper("ctg")).thenReturn("CTG");
+        Map<String, Object> testValues = new HashMap<>();
+        testValues.put("name","tg");
+        testValues.put("computerCaseModel","ctg");
+
+        this.service.patchComputer(1L, testValues);
+
+        assertEquals("TG", computer.getName());
+        assertEquals("CTG", computer.getComputerCaseModel());
+    }
+
+    @Test
+    public void patchComputerWithIncorrectValues(){
+        Computer computer = new Computer("SIN","COS");
+        when(computerRepository.findById(1L)).thenReturn(Optional.of(computer));
+        when(stringUtilsService.upper("tg")).thenReturn("TG");
+        when(stringUtilsService.upper("ctg")).thenReturn("CTG");
+        Map<String, Object> testValues = new HashMap<>();
+        testValues.put("name", "tg");
+        testValues.put("computerCaseModel","");
+
+        assertThrows(ComputerNewFieldValueIsEmptyException.class, () -> this.service.patchComputer(1L, testValues));
+
+        testValues.put("name", null);
+
+        assertThrows(ComputerNewFieldValueIsEmptyException.class, () -> this.service.patchComputer(1L, testValues));
+
+        testValues.put("name", 1);
+
+        assertThrows(ComputerFieldDoesntExistsException.class, () -> this.service.patchComputer(1L, testValues));
+    }
+
 
 }
