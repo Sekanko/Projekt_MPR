@@ -182,7 +182,13 @@ public class ComputerService {
                         .forEach(field -> {
                             try {
                                 field.setAccessible(true);
-                                computerSetterByFieldName(field.getName(), stringUtilsService.upper(String.valueOf(field.get(computer))), computer);
+                                String fieldNewValue = String.valueOf(field.get(computer));
+
+                                if (fieldNewValue == null){
+                                    throw new ComputerNewFieldValueIsEmptyException();
+                                }
+
+                                computerSetterByFieldName(field.getName(), fieldNewValue, computer);
                                 field.setAccessible(false);
                             } catch (IllegalAccessException e) {
                                 throw new RuntimeException(e);

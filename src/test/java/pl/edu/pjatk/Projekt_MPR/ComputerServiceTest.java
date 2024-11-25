@@ -36,7 +36,6 @@ public class ComputerServiceTest {
     public void createSetsComputerToUpperCase(){
         Computer computer = new Computer("name","case");
         this.service.createComputer(computer);
-        System.out.println(computer.getId());
 
         verify(stringUtilsService,times(2)).upper(any());
         verify(computerRepository,times(4)).save(any());
