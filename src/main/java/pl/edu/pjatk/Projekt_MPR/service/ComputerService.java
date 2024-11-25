@@ -38,13 +38,7 @@ public class ComputerService {
     public void createComputer(Computer computer) {
         computer.setName(stringUtilsService.upper(computer.getName()));
         computer.setComputerCaseModel(stringUtilsService.upper(computer.getComputerCaseModel()));
-        computer.setCalcId();
-
-        if (isCalculatedIdTaken(computer.getCalcId(), computer)) {
-            throw new ComputerTakenCalculatedIdException();
-        }
-
-        this.computerRepository.save(computer);
+        saveComputer(computer);
     }
 
     public void deleteComputer(Long id) {
@@ -103,27 +97,11 @@ public class ComputerService {
                 throw new ComputerNewFieldValueIsEmptyException();
             }
 
-            boolean fieldExists = fieldNames.stream()
-                    .anyMatch(field -> field.getName().equals(fieldName));
-
-            if (fieldExists){
-                try {
-                    String setterName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-                    Method setter = computer.getClass().getDeclaredMethod(setterName, fieldNewValue.getClass());
-                    setter.invoke(computer, fieldNewValue);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            if (fieldNames.stream().anyMatch(field -> field.getName().equals(fieldName))){
+                computerSetterByFieldName(fieldName, fieldNewValue, computer);
             }
         });
-
-        computer.setCalcId();
-
-        if (isCalculatedIdTaken(computer.getCalcId(), computer)) {
-            throw new ComputerTakenCalculatedIdException();
-        }
-
-        computerRepository.save(computer);
+        saveComputer(computer);
     }
 
     public byte[] getInfo(Long id) {
@@ -196,5 +174,43 @@ public class ComputerService {
         List<Computer> computers = (ArrayList <Computer>) computerRepository.findAll();
         return computers.stream()
                 .anyMatch(computer -> !computer.equals(currentComputer) && computer.getCalcId() == calcId);
+    }
+
+    private void saveComputer (Computer computer) {
+        Arrays.stream(computer.getClass().getDeclaredFields())
+                .filter(field -> field.getType().equals(String.class))
+                        .forEach(field -> {
+                            try {
+                                field.setAccessible(true);
+                                computerSetterByFieldName(field.getName(), stringUtilsService.upper(String.valueOf(field.get(computer))), computer);
+                                field.setAccessible(false);
+                            } catch (IllegalAccessException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+
+        computer.setCalcId();
+
+        if (isCalculatedIdTaken(computer.getCalcId(), computer)){
+            throw new ComputerTakenCalculatedIdException();
+        } else {
+            computerRepository.save(computer);
+        }
+    }
+
+    private <T> void computerSetterByFieldName(String fieldName, T value, Computer computer) {
+         Arrays.stream(Computer.class.getDeclaredFields())
+                .filter(f -> f.getName().equals(fieldName))
+                .filter(f -> f.getType().equals(value.getClass()))
+                .findFirst()
+                 .orElseThrow(() -> new ComputerFieldDoesntExistsException());
+        try {
+            String toMethodFieldName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+            Method setter = Computer.class.getDeclaredMethod("set" + toMethodFieldName, value.getClass());
+            setter.invoke(computer, value);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }
