@@ -96,7 +96,7 @@ public class ComputerService {
             }
 
             if (fieldNames.stream().anyMatch(field -> field.getName().equals(fieldName))){
-                computerSetterByFieldName(fieldName, fieldNewValue, computer);
+                computerSetValueByFieldName(fieldName, fieldNewValue, computer);
             }
         });
         saveComputer(computer);
@@ -116,13 +116,12 @@ public class ComputerService {
             for (Field field : Computer.class.getDeclaredFields()){
                 field.setAccessible(true);
                 String fieldName = field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
-                Method getter = Computer.class.getDeclaredMethod("get" + fieldName);
 
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
                 contentStream.showText(stringToSave(fieldName) + ":");
                 contentStream.newLine();
                 contentStream.setFont(PDType1Font.HELVETICA, 12);
-                contentStream.showText(getter.invoke(computer).toString());
+                contentStream.showText(String.valueOf(field.get(computer)));
                 contentStream.newLine();
                 contentStream.newLine();
 
@@ -136,10 +135,8 @@ public class ComputerService {
             infoPDF.save(result);
 
             return result.toByteArray();
-        } catch (IOException e){
-            throw new ComputerPDFInfoWasntCreatedException();
         } catch (Exception e){
-            throw new RuntimeException(e);
+            throw new RuntimeException("There was unexpected error in PDDocument",e);
         }
     }
 
@@ -181,11 +178,11 @@ public class ComputerService {
                     field.setAccessible(true);
 
                     String fieldNewValue = this.stringUtilsService.upper(String.valueOf(field.get(computer)));
-                    computerSetterByFieldName(field.getName(), fieldNewValue, computer);
+                    computerSetValueByFieldName(field.getName(), fieldNewValue, computer);
 
                     field.setAccessible(false);
                 } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException("Unexpected IllegalAccessException",e);
                 }
             }
         }
@@ -199,18 +196,18 @@ public class ComputerService {
         }
     }
 
-    private <T> void computerSetterByFieldName(String fieldName, T value, Computer computer) {
-         Arrays.stream(Computer.class.getDeclaredFields())
+    private <T> void computerSetValueByFieldName(String fieldName, T value, Computer computer) {
+         Field field = Arrays.stream(Computer.class.getDeclaredFields())
                 .filter(f -> f.getName().equals(fieldName))
                 .filter(f -> f.getType().equals(value.getClass()))
                 .findFirst()
-                 .orElseThrow(() -> new ComputerFieldDoesntExistsException());
+                 .orElseThrow(ComputerFieldDoesntExistsException::new);
         try {
-            String toMethodFieldName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-            Method setter = Computer.class.getDeclaredMethod("set" + toMethodFieldName, value.getClass());
-            setter.invoke(computer, value);
+            field.setAccessible(true);
+            field.set(computer, value);
+            field.setAccessible(false);
         } catch (Exception e){
-            e.printStackTrace();
+            throw new RuntimeException("Unexpected exception",e);
         }
     }
 }

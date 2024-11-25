@@ -4,9 +4,9 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import pl.edu.pjatk.Projekt_MPR.exception.ComputerFieldDoesntExistsException;
 import pl.edu.pjatk.Projekt_MPR.exception.ComputerNewFieldValueIsEmptyException;
+import pl.edu.pjatk.Projekt_MPR.exception.ComputerNoFoundException;
 import pl.edu.pjatk.Projekt_MPR.model.Computer;
 import pl.edu.pjatk.Projekt_MPR.repository.ComputerRepository;
 import pl.edu.pjatk.Projekt_MPR.service.ComputerService;
@@ -34,7 +34,7 @@ public class ComputerServiceTest {
 
     @Test
     public void createSetsComputerToUpperCase(){
-        Computer computer = new Computer("lol","case");
+        Computer computer = new Computer("SIN","COS");
 
         when(stringUtilsService.upper(any())).thenReturn("upperWorks");
         this.service.createComputer(computer);
@@ -42,6 +42,7 @@ public class ComputerServiceTest {
         verify(stringUtilsService,times(2)).upper(any());
         verify(computerRepository,times(4)).save(any());
     }
+
 
     @Test
     public void getAllComputersToLowerCaseWithFirstLetterAsCapital(){
@@ -106,7 +107,7 @@ public class ComputerServiceTest {
             assertEquals(compareString, content);
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("There was unexpected error in PDDocument",e);
         }
     }
 
@@ -146,6 +147,34 @@ public class ComputerServiceTest {
         testValues.put("name", 1);
 
         assertThrows(ComputerFieldDoesntExistsException.class, () -> this.service.patchComputer(1L, testValues));
+
+        testValues.put("car", "Nissan");
+        assertThrows(ComputerFieldDoesntExistsException.class, () -> this.service.patchComputer(1L, testValues));
+    }
+
+    @Test
+    public void deleteComputerWithIdInRange(){
+        when(computerRepository.existsById(1L)).thenReturn(true);
+        this.service.deleteComputer(1L);
+
+        verify(computerRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    public void everyComputerNoFoundException(){
+        var exception = ComputerNoFoundException.class;
+        //delete
+        when(computerRepository.existsById(1L)).thenReturn(false);
+        assertThrows(exception, () -> this.service.deleteComputer(1L));
+        //getComputer
+        assertThrows(exception, () -> this.service.getComputer(1L));
+        //getComputerByName
+        assertThrows(exception, () -> this.service.getComputerByName("sin"));
+        //getComputerByComputerCaseModel
+        assertThrows(exception, () -> this.service.getComputerByComputerCaseModel("cos"));
+        //patchComputer
+        assertThrows(exception, () -> this.service.patchComputer(1L, null));
+
     }
 
 
