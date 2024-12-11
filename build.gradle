@@ -26,6 +26,9 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	//https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox
 	implementation("org.apache.pdfbox:pdfbox:2.0.1")
+	// https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+	implementation("org.seleniumhq.selenium:selenium-java:4.27.0")
+
 }
 
 tasks.named('test') {

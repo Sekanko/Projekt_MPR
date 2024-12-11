@@ -7,10 +7,10 @@
 <body>
 <h1>Update computer</h1>
 <form action="#" th:action="@{/updateForm}" th:object="${computer}" method="post">
-    <input type="number" name="id">
-    <input type="text" name="name" th:field="${computer.name}"/>
-    <input type="text" name="computerCaseModel" th:field="${computer.computerCaseModel}"/>
-    <input type="submit" value="Update"/>
+    <input id="id" type="number" name="id" required>
+    <input id="name" type="text" name="name" th:field="${computer.name}"/>
+    <input id="computerCaseModel" type="text" name="computerCaseModel" th:field="${computer.computerCaseModel}"/>
+    <input id="submit" type="submit" value="Update"/>
 </form>
 </body>
 </html>
