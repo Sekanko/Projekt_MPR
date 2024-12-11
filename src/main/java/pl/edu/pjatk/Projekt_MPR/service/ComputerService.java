@@ -58,7 +58,6 @@ public class ComputerService {
                 .getFirst()).get();
     }
 
-
     public List<Computer> getComputerByName(String name) {
         List<Computer> computers = computerRepository.findByName(stringUtilsService.upper(name));
         if (computers.isEmpty()){
@@ -89,7 +88,6 @@ public class ComputerService {
                 .filter(field -> !field.getName().equals("id") && !field.getName().equals("calcId"))
                 .toList();
 
-
         patch.forEach((fieldName, fieldNewValue) -> {
             if (fieldNewValue == "" || fieldNewValue == null){
                 throw new ComputerNewFieldValueIsEmptyException();
@@ -115,8 +113,8 @@ public class ComputerService {
 
             for (Field field : Computer.class.getDeclaredFields()){
                 field.setAccessible(true);
-                String fieldName = field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
 
+                String fieldName = field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1);
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
                 contentStream.showText(stringToSave(fieldName) + ":");
                 contentStream.newLine();
@@ -136,7 +134,7 @@ public class ComputerService {
 
             return result.toByteArray();
         } catch (Exception e){
-            throw new RuntimeException("There was unexpected error in PDDocument",e);
+            throw new ComputerPDFInfoWasntCreatedException();
         }
     }
 

@@ -3,6 +3,7 @@ package pl.edu.pjatk.Projekt_MPR.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import pl.edu.pjatk.Projekt_MPR.exception.ComputerPDFInfoWasntCreatedException;
 import pl.edu.pjatk.Projekt_MPR.model.Computer;
 import pl.edu.pjatk.Projekt_MPR.service.ComputerService;
 
@@ -51,10 +52,8 @@ public class MyRestController {
                     .headers(headers)
                     .body(pdf);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ComputerPDFInfoWasntCreatedException();
         }
-
-        return null;
     }
 
     @PostMapping("computer")
