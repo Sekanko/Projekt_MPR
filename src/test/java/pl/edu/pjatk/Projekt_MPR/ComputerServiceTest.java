@@ -117,7 +117,10 @@ public class ComputerServiceTest {
 
         when(computerRepository.findById(1L)).thenReturn(Optional.of(computer));
         when(stringUtilsService.upper("tg")).thenReturn("TG");
+        when(stringUtilsService.upper("TG")).thenReturn("TG");
         when(stringUtilsService.upper("ctg")).thenReturn("CTG");
+        when(stringUtilsService.upper("lol")).thenReturn("LOL");
+
         Map<String, Object> testValues = new HashMap<>();
         testValues.put("name","tg");
         testValues.put("computerCaseModel","ctg");
@@ -126,6 +129,14 @@ public class ComputerServiceTest {
 
         assertEquals("TG", computer.getName());
         assertEquals("CTG", computer.getComputerCaseModel());
+
+        testValues.put("name","");
+        testValues.put("computerCaseModel","lol");
+
+        this.service.patchComputer(1L, testValues);
+        int a = 0;
+        assertEquals("TG", computer.getName());
+        assertEquals("LOL", computer.getComputerCaseModel());
     }
 
     @Test
@@ -135,17 +146,11 @@ public class ComputerServiceTest {
         when(stringUtilsService.upper("tg")).thenReturn("TG");
         when(stringUtilsService.upper("ctg")).thenReturn("CTG");
         Map<String, Object> testValues = new HashMap<>();
-        testValues.put("name", "tg");
-        testValues.put("computerCaseModel","");
-
-        assertThrows(ComputerNewFieldValueIsEmptyException.class, () -> this.service.patchComputer(1L, testValues));
 
         testValues.put("name", null);
-
         assertThrows(ComputerNewFieldValueIsEmptyException.class, () -> this.service.patchComputer(1L, testValues));
 
         testValues.put("name", 1);
-
         assertThrows(ComputerFieldDoesntExistsException.class, () -> this.service.patchComputer(1L, testValues));
 
         testValues.put("car", "Nissan");

@@ -89,11 +89,11 @@ public class ComputerService {
                 .toList();
 
         patch.forEach((fieldName, fieldNewValue) -> {
-            if (fieldNewValue == "" || fieldNewValue == null){
+            if (fieldNewValue == null){
                 throw new ComputerNewFieldValueIsEmptyException();
             }
 
-            if (fieldNames.stream().anyMatch(field -> field.getName().equals(fieldName))){
+            if (!fieldNewValue.equals("") && fieldNames.stream().anyMatch(field -> field.getName().equals(fieldName))){
                 computerSetValueByFieldName(fieldName, fieldNewValue, computer);
             }
         });

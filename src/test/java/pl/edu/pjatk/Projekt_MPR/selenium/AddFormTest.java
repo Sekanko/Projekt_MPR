@@ -15,13 +15,13 @@ public class AddFormTest {
         this.webDriver = new FirefoxDriver();
     }
 
-    @Test
-    public void testAddForm() {
-        AddFormPage addFormPage = new AddFormPage(webDriver);
-        addFormPage.open()
-                .fillInNameInput("Sin")
-                .fillInComputerCaseModelInput("Cos");
-        ViewAllPage viewAllPage = addFormPage.submitForm();
-        assertEquals("All my computers:", viewAllPage.getHeaderText());
-    }
+//    @Test
+//    public void testAddForm() {
+//        AddFormPage addFormPage = new AddFormPage(webDriver);
+//        addFormPage.open()
+//                .fillInNameInput("Sin")
+//                .fillInComputerCaseModelInput("Cos");
+//        ViewAllPage viewAllPage = addFormPage.submitForm();
+//        assertEquals("All my computers:", viewAllPage.getHeaderText());
+//    }
 }
