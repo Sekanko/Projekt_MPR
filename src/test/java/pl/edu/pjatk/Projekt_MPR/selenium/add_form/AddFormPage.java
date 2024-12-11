@@ -1,9 +1,7 @@
-package pl.edu.pjatk.Projekt_MPR.selenium;
+package pl.edu.pjatk.Projekt_MPR.selenium.add_form;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import pl.edu.pjatk.Projekt_MPR.selenium.abstract_pages.AbstractPageWithComputerFields;
 
 public class AddFormPage extends AbstractPageWithComputerFields {
 
@@ -12,7 +10,7 @@ public class AddFormPage extends AbstractPageWithComputerFields {
     }
 
     @Override
-    public AbstractPostPage open(){
+    public AddFormPage open(){
         this.webDriver.get("http://localhost:8080/addForm");
         return this;
     }

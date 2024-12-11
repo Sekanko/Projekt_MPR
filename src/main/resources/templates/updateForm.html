@@ -9,9 +9,7 @@
 <form action="#" th:action="@{/updateForm}" th:object="${computer}" method="post">
     <input id="id" type="number" name="id" required>
     <input id="name" type="text" name="name" th:field="${computer.name}"/>
-    <input id="nameCheckbox" type="checkbox" name="nameCheckbox">
     <input id="computerCaseModel" type="text" name="computerCaseModel" th:field="${computer.computerCaseModel}"/>
-    <input id="computerCaseModelCheckbox" type="checkbox" name="computerCaseModelCheckbox">
     <input id="submit" type="submit" value="Update"/>
 </form>
 </body>

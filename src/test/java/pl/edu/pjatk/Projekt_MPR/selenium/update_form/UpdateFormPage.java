@@ -1,10 +1,11 @@
-package pl.edu.pjatk.Projekt_MPR.selenium;
+package pl.edu.pjatk.Projekt_MPR.selenium.update_form;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import pl.edu.pjatk.Projekt_MPR.selenium.abstract_pages.AbstractPageWithComputerFields;
 
-public class UpdateFormPage extends AbstractPageWithComputerFields{
+public class UpdateFormPage extends AbstractPageWithComputerFields {
     @FindBy(id = "id")
     private WebElement idInput;
 
@@ -18,7 +19,7 @@ public class UpdateFormPage extends AbstractPageWithComputerFields{
     }
 
     @Override
-    public AbstractPostPage open(){
+    public UpdateFormPage open(){
         this.webDriver.get("http://localhost:8080/updateForm");
         return this;
     }

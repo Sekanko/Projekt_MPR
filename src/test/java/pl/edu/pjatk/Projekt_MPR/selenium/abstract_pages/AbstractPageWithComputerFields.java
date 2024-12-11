@@ -1,4 +1,4 @@
-package pl.edu.pjatk.Projekt_MPR.selenium;
+package pl.edu.pjatk.Projekt_MPR.selenium.abstract_pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
