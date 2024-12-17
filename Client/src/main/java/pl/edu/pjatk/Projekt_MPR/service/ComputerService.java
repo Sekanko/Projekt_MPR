@@ -4,35 +4,37 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 import pl.edu.pjatk.Projekt_MPR.exception.*;
 import pl.edu.pjatk.Projekt_MPR.model.Computer;
-import pl.edu.pjatk.Projekt_MPR.repository.ComputerRepository;
-
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.*;
 
 @Service
 public class ComputerService {
 
-    private ComputerRepository computerRepository;
-    private StringUtilsService stringUtilsService;
+    private final StringUtilsService stringUtilsService;
+    private final RestClient restClient;
 
-    public ComputerService(ComputerRepository computerRepository, StringUtilsService stringUtilsService) {
-        this.computerRepository = computerRepository;
+    public ComputerService(StringUtilsService stringUtilsService) {
         this.stringUtilsService = stringUtilsService;
-
-        computerRepository.save(new Computer("IDK", "TITANIC"));
-        computerRepository.save(new Computer("IDK","NIERRA"));
-        computerRepository.save(new Computer("KOMP", "LATUN"));
+        this.restClient = RestClient.create("http://localhost:8081");
     }
 
     public List<Computer> getAll() {
-        return view((List<Computer>) computerRepository.findAll());
+        List<Computer> computers = restClient.get()
+                .uri("/computer/all")
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
+
+        if (computers == null) {
+            throw new ComputerNoFoundException();
+        }
+
+        return view(computers);
     }
 
     public void createComputer(Computer computer) {
@@ -40,48 +42,48 @@ public class ComputerService {
     }
 
     public void deleteComputer(Long id) {
-        if (this.computerRepository.existsById(id)) {
-            this.computerRepository.deleteById(id);
-        } else {
-            throw  new ComputerNoFoundException();
-        }
+
     }
 
     public Computer getComputer(Long id) {
-        Optional<Computer> computer = computerRepository.findById(id);
+        Computer computer = restClient.get()
+                .uri("computer/get/id/{id}", id)
+                .retrieve()
+                .body(Computer.class);
 
-        if (computer.isEmpty()){
+        if (computer == null){
             throw new ComputerNoFoundException();
         }
 
-        return computer.map(value -> view(Collections.singletonList(value))
-                .getFirst()).get();
+        return view(Collections.singletonList(computer)).getFirst();
     }
 
     public List<Computer> getComputerByName(String name) {
-        List<Computer> computers = computerRepository.findByName(stringUtilsService.upper(name));
-        if (computers.isEmpty()){
+        List<Computer> computers = restClient.get()
+                .uri("computer/get/name/{name}", name)
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
+
+        if (computers == null) {
             throw new ComputerNoFoundException();
         }
         return view(computers);
     }
 
     public List<Computer> getComputerByComputerCaseModel(String computerCaseModel) {
-        List<Computer> computers = computerRepository.findByComputerCaseModel(stringUtilsService.upper(computerCaseModel));
-        if (computers.isEmpty()){
+        List<Computer> computers = restClient.get()
+                .uri("computer/get/computerCaseModel/{computerCaseModel}", computerCaseModel)
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {});
+
+        if (computers == null){
             throw new ComputerNoFoundException();
         }
         return view(computers);
     }
 
     public void patchComputer(Long id, Map<String, Object> patch) {
-        Optional<Computer> optionalComputer = computerRepository.findById(id);
-
-        if (optionalComputer.isEmpty()){
-            throw new ComputerNoFoundException();
-        }
-
-        Computer computer = optionalComputer.get();
+        Computer computer = getComputer(id);
 
         var fieldNames = Arrays.stream(Computer.class
                 .getDeclaredFields())
@@ -164,7 +166,7 @@ public class ComputerService {
     }
 
     private boolean isCalculatedIdTaken(int calcId, Computer currentComputer) {
-        List<Computer> computers = (ArrayList <Computer>) computerRepository.findAll();
+        List<Computer> computers = getAll();
         return computers.stream()
                 .anyMatch(computer -> !computer.equals(currentComputer) && computer.getCalcId() == calcId);
     }
@@ -190,7 +192,6 @@ public class ComputerService {
         if (isCalculatedIdTaken(computer.getCalcId(), computer)){
             throw new ComputerTakenCalculatedIdException();
         } else {
-            computerRepository.save(computer);
         }
     }
 
