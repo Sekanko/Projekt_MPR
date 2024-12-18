@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Controller
 public class MyViewController {
-    private ComputerService computerService;
+    private final ComputerService computerService;
 
     public MyViewController(ComputerService computerService) {
         this.computerService = computerService;

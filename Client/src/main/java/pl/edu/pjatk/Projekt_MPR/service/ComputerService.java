@@ -4,7 +4,10 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import pl.edu.pjatk.Projekt_MPR.exception.*;
@@ -17,11 +20,12 @@ import java.util.*;
 public class ComputerService {
 
     private final StringUtilsService stringUtilsService;
+    @Autowired
     private final RestClient restClient;
 
-    public ComputerService(StringUtilsService stringUtilsService) {
+    public ComputerService(StringUtilsService stringUtilsService, RestClient restClient) {
         this.stringUtilsService = stringUtilsService;
-        this.restClient = RestClient.create("http://localhost:8081");
+        this.restClient = restClient;
     }
 
     public List<Computer> getAll() {
@@ -42,7 +46,10 @@ public class ComputerService {
     }
 
     public void deleteComputer(Long id) {
-
+        restClient.delete()
+                .uri("/computer/delete/{id}", id)
+                .retrieve()
+                .toBodilessEntity();
     }
 
     public Computer getComputer(Long id) {
@@ -192,6 +199,12 @@ public class ComputerService {
         if (isCalculatedIdTaken(computer.getCalcId(), computer)){
             throw new ComputerTakenCalculatedIdException();
         } else {
+            restClient.post()
+                    .uri("computer")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(computer)
+                    .retrieve()
+                    .toBodilessEntity();
         }
     }
 

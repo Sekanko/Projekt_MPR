@@ -2,17 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Samochody</title>
+    <title>Komputery</title>
 </head>
 <body>
 <h1>All my computers:</h1>
 <h2 th:text = "${name}"></h2>
 <table>
     <tr>
+        <td>ID</td>
         <td>Name</td>
         <td>Computer case model</td>
     </tr>
     <tr th:each="computer : ${computers}">
+        <td th:text="${computer.id}"></td>
         <td th:text="${computer.name}"></td>
         <td th:text="${computer.computerCaseModel}"></td>
     </tr>
