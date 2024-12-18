@@ -65,12 +65,14 @@ public class MyViewController {
     }
 
     @GetMapping("/deleteForm")
-    public String deleteComputer() {
+    public String deleteComputer(Model model) {
+        List<Computer> computers = this.computerService.getAll();
+        model.addAttribute("computers", computers);
         return "deleteForm";
     }
 
-    @PostMapping("/deleteForm")
-    public String submitDeleteForm(@RequestParam("id") Long id) {
+    @PostMapping("/deleteForm/{id}")
+    public String submitDeleteForm(@PathVariable Long id) {
         this.computerService.deleteComputer(id);
         return "redirect:/view/all";
     }
