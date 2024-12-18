@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pjatk.Projekt_MPR.model.Computer;
-import pl.edu.pjatk.Projekt_MPR.service.ComputerService;
+import pl.edu.pjatk.Projekt_MPR.service.ComputerViewService;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -13,15 +13,15 @@ import java.util.Map;
 
 @Controller
 public class MyViewController {
-    private final ComputerService computerService;
+    private final ComputerViewService computerViewService;
 
-    public MyViewController(ComputerService computerService) {
-        this.computerService = computerService;
+    public MyViewController(ComputerViewService computerViewService) {
+        this.computerViewService = computerViewService;
     }
 
     @GetMapping("/view/all")
     public String getAllComputers(Model model) {
-        List<Computer> computers = this.computerService.getAll();
+        List<Computer> computers = this.computerViewService.getAll();
         model.addAttribute("computers", computers);
         return "viewAll";
     }
@@ -34,7 +34,7 @@ public class MyViewController {
 
     @PostMapping("/addForm")
     public String submitAddForm(@ModelAttribute Computer computer) {
-        this.computerService.createComputer(computer);
+        this.computerViewService.createComputer(computer);
         return "redirect:/view/all";
     }
 
@@ -60,20 +60,20 @@ public class MyViewController {
                 throw new RuntimeException("Not possible throw");
             }
         }
-        this.computerService.patchComputer(id, newValues);
+        this.computerViewService.patchComputer(id, newValues);
         return "redirect:/view/all";
     }
 
     @GetMapping("/deleteForm")
     public String deleteComputer(Model model) {
-        List<Computer> computers = this.computerService.getAll();
+        List<Computer> computers = this.computerViewService.getAll();
         model.addAttribute("computers", computers);
         return "deleteForm";
     }
 
     @PostMapping("/deleteForm/{id}")
     public String submitDeleteForm(@PathVariable Long id) {
-        this.computerService.deleteComputer(id);
+        this.computerViewService.deleteComputer(id);
         return "redirect:/view/all";
     }
 }

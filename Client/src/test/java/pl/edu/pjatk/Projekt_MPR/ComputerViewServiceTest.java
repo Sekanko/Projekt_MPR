@@ -1,33 +1,18 @@
 package pl.edu.pjatk.Projekt_MPR;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.boot.test.web.client.MockServerRestClientCustomizer;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.client.match.MockRestRequestMatchers;
-import org.springframework.test.web.client.response.MockRestResponseCreators;
 import org.springframework.web.client.RestClient;
-import pl.edu.pjatk.Projekt_MPR.exception.ComputerFieldDoesntExistsException;
-import pl.edu.pjatk.Projekt_MPR.exception.ComputerNewFieldValueIsEmptyException;
-import pl.edu.pjatk.Projekt_MPR.exception.ComputerNoFoundException;
-import pl.edu.pjatk.Projekt_MPR.model.Computer;
-import pl.edu.pjatk.Projekt_MPR.service.ComputerService;
+import pl.edu.pjatk.Projekt_MPR.service.ComputerViewService;
 import pl.edu.pjatk.Projekt_MPR.service.StringUtilsService;
 
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @RestClientTest
-public class ComputerServiceTest {
-    private ComputerService service;
+public class ComputerViewServiceTest {
+    private ComputerViewService service;
     private StringUtilsService stringUtilsService;
     private MockServerRestClientCustomizer customizer = new MockServerRestClientCustomizer();
     private RestClient.Builder builder = RestClient.builder();
@@ -36,7 +21,7 @@ public class ComputerServiceTest {
     public void setUp(){
         this.stringUtilsService = mock(StringUtilsService.class);
         customizer.customize(builder);
-        this.service = new ComputerService(stringUtilsService, builder.build());
+        this.service = new ComputerViewService(stringUtilsService, builder.build());
     }
 
 //    @Test

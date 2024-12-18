@@ -1,27 +1,21 @@
 package pl.edu.pjatk.Projekt_MPR.service;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import pl.edu.pjatk.Projekt_MPR.exception.*;
 import pl.edu.pjatk.Projekt_MPR.model.Computer;
-import java.io.ByteArrayOutputStream;
-import java.lang.reflect.Field;
+
 import java.util.*;
 
 @Service
-public class ComputerService {
+public class ComputerViewService {
     @Autowired
     private final RestClient restClient;
 
-    public ComputerService(RestClient restClient) {
+    public ComputerViewService(RestClient restClient) {
         this.restClient = restClient;
     }
 
