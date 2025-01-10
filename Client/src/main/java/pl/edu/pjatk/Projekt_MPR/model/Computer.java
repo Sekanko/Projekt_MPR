@@ -14,9 +14,7 @@ public class Computer {
         setCalcId();
     }
 
-    public Computer() {
-
-    }
+    public Computer() {}
 
     public Long getId() {
         return id;

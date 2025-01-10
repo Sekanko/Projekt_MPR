@@ -35,7 +35,7 @@ public class ComputerViewService {
 
     public void createComputer(Computer computer) {
         restClient.post()
-                .uri("computer")
+                .uri("/computer")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(computer)
                 .retrieve()
@@ -51,7 +51,7 @@ public class ComputerViewService {
 
     public Computer getComputer(Long id) {
         Computer computer = restClient.get()
-                .uri("computer/get/id/{id}", id)
+                .uri("/computer/get/id/{id}", id)
                 .retrieve()
                 .body(Computer.class);
 
@@ -64,10 +64,9 @@ public class ComputerViewService {
 
     public List<Computer> getComputerByName(String name) {
         List<Computer> computers = restClient.get()
-                .uri("computer/get/name/{name}", name)
+                .uri("/computer/get/name/{name}", name)
                 .retrieve()
-                .body(new ParameterizedTypeReference<>() {
-                });
+                .body(new ParameterizedTypeReference<>(){});
 
         if (computers == null) {
             throw new ComputerNoFoundException();
@@ -77,7 +76,7 @@ public class ComputerViewService {
 
     public List<Computer> getComputerByComputerCaseModel(String computerCaseModel) {
         List<Computer> computers = restClient.get()
-                .uri("computer/get/computerCaseModel/{computerCaseModel}", computerCaseModel)
+                .uri("/computer/get/computerCaseModel/{computerCaseModel}", computerCaseModel)
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {
                 });
@@ -98,7 +97,7 @@ public class ComputerViewService {
 
     public byte[] getInfo(Long id) {
         return restClient.get()
-                .uri("computer/get/info/{id}", id)
+                .uri("/computer/get/info/{id}", id)
                 .retrieve()
                 .body(new ParameterizedTypeReference<>(){});
     }
