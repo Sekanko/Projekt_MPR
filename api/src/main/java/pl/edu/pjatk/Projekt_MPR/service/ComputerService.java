@@ -26,9 +26,6 @@ public class ComputerService {
         this.computerRepository = computerRepository;
         this.stringUtilsService = stringUtilsService;
 
-        computerRepository.save(new Computer("IDK", "TITANIC"));
-        computerRepository.save(new Computer("IDK","NIERRA"));
-        computerRepository.save(new Computer("KOMP", "LATUN"));
     }
 
     public List<Computer> getAll() {
