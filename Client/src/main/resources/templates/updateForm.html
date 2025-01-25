@@ -6,11 +6,13 @@
 </head>
 <body>
 <h1>Update computer</h1>
-<form action="#" th:action="@{/updateForm}" th:object="${computer}" method="post">
-    <input id="id" type="number" name="id" required>
+<form action="#" th:action="@{/updateForm(id=${computer.getId()})}" th:object="${computer}" method="post">
     <input id="name" type="text" name="name" th:field="${computer.name}"/>
     <input id="computerCaseModel" type="text" name="computerCaseModel" th:field="${computer.computerCaseModel}"/>
     <input id="submit" type="submit" value="Update"/>
+</form>
+<form action="/view/all">
+    <input id="cancel" type="submit" value="Cancel">
 </form>
 </body>
 </html>

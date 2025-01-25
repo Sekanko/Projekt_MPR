@@ -2,22 +2,26 @@ package pl.edu.pjatk.Projekt_MPR.model;
 
 import java.util.Objects;
 
-public class Computer {
+public class ComputerDto {
     private Long id;
     private String name;
     private String computerCaseModel;
     private int calcId;
 
-    public Computer(String name, String computerCaseModel) {
+    public ComputerDto(String name, String computerCaseModel) {
         this.name = name;
         this.computerCaseModel = computerCaseModel;
         setCalcId();
     }
 
-    public Computer() {}
+    public ComputerDto() {}
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getCalcId() {
@@ -55,7 +59,7 @@ public class Computer {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Computer computer = (Computer) o;
+        ComputerDto computer = (ComputerDto) o;
         return calcId == computer.calcId && Objects.equals(id, computer.id) && Objects.equals(name, computer.name) && Objects.equals(computerCaseModel, computer.computerCaseModel);
     }
 
@@ -63,4 +67,5 @@ public class Computer {
     public int hashCode() {
         return Objects.hash(id, name, computerCaseModel, calcId);
     }
+
 }

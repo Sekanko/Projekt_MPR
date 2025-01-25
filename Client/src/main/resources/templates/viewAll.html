@@ -16,6 +16,10 @@
         <td th:text="${computer.id}"></td>
         <td th:text="${computer.name}"></td>
         <td th:text="${computer.computerCaseModel}"></td>
+        <td>
+            <a th:href="@{http://localhost:8082/updateForm/{id}(id=${computer.id})}">edit</a>
+            <a th:href="@{http://localhost:8082/deleteForm/{id}(id=${computer.id})}">delete</a>
+        </td>
     </tr>
 </table>
 </body>

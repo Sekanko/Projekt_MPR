@@ -3,7 +3,7 @@ package pl.edu.pjatk.Projekt_MPR.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.edu.pjatk.Projekt_MPR.model.Computer;
+import pl.edu.pjatk.Projekt_MPR.model.ComputerDto;
 import pl.edu.pjatk.Projekt_MPR.service.ComputerViewService;
 
 import java.lang.reflect.Field;
@@ -21,31 +21,33 @@ public class MyViewController {
 
     @GetMapping("/view/all")
     public String getAllComputers(Model model) {
-        List<Computer> computers = this.computerViewService.getAll();
+        List<ComputerDto> computers = this.computerViewService.getAll();
         model.addAttribute("computers", computers);
         return "viewAll";
     }
 
     @GetMapping("/addForm")
     public String displayAddForm(Model model) {
-        model.addAttribute("computer", new Computer());
+        model.addAttribute("computer", new ComputerDto());
         return "addForm";
     }
 
     @PostMapping("/addForm")
-    public String submitAddForm(@ModelAttribute Computer computer) {
+    public String submitAddForm(@ModelAttribute ComputerDto computer) {
         this.computerViewService.createComputer(computer);
         return "redirect:/view/all";
     }
 
-    @GetMapping("/updateForm")
-    public String displayUpdateForm(Model model) {
-        model.addAttribute("computer", new Computer());
+    @GetMapping("/updateForm/{id}")
+    public String displayUpdateForm(Model model, @PathVariable Long id) {
+        ComputerDto computer = new ComputerDto();
+        computer.setId(id);
+        model.addAttribute("computer", computer);
         return "updateForm";
     }
 
     @PostMapping("/updateForm")
-    public String submitUpdateForm(@RequestParam("id") Long id, @ModelAttribute Computer computer) {
+    public String submitUpdateForm(@RequestParam("id") Long id, @ModelAttribute ComputerDto computer) {
         Map<String, Object> newValues = new HashMap<>();
         for (Field field : computer.getClass().getDeclaredFields()) {
             String fieldName = field.getName();
@@ -64,10 +66,10 @@ public class MyViewController {
         return "redirect:/view/all";
     }
 
-    @GetMapping("/deleteForm")
-    public String deleteComputer(Model model) {
-        List<Computer> computers = this.computerViewService.getAll();
-        model.addAttribute("computers", computers);
+    @GetMapping("/deleteForm/{id}")
+    public String deleteComputer(Model model, @PathVariable Long id) {
+        ComputerDto computer = computerViewService.getComputer(id);
+        model.addAttribute("computer", computer);
         return "deleteForm";
     }
 

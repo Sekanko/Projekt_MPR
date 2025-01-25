@@ -6,7 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import pl.edu.pjatk.Projekt_MPR.exception.*;
-import pl.edu.pjatk.Projekt_MPR.model.Computer;
+import pl.edu.pjatk.Projekt_MPR.model.ComputerDto;
 
 import java.util.*;
 
@@ -19,8 +19,8 @@ public class ComputerViewService {
         this.restClient = restClient;
     }
 
-    public List<Computer> getAll() {
-        List<Computer> computers = restClient.get()
+    public List<ComputerDto> getAll() {
+        List<ComputerDto> computers = restClient.get()
                 .uri("/computer/all")
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {
@@ -33,7 +33,7 @@ public class ComputerViewService {
         return computers;
     }
 
-    public void createComputer(Computer computer) {
+    public void createComputer(ComputerDto computer) {
         restClient.post()
                 .uri("/computer")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -49,11 +49,11 @@ public class ComputerViewService {
                 .toBodilessEntity();
     }
 
-    public Computer getComputer(Long id) {
-        Computer computer = restClient.get()
+    public ComputerDto getComputer(Long id) {
+        ComputerDto computer = restClient.get()
                 .uri("/computer/get/id/{id}", id)
                 .retrieve()
-                .body(Computer.class);
+                .body(ComputerDto.class);
 
         if (computer == null) {
             throw new ComputerNoFoundException();
@@ -62,8 +62,8 @@ public class ComputerViewService {
         return computer;
     }
 
-    public List<Computer> getComputerByName(String name) {
-        List<Computer> computers = restClient.get()
+    public List<ComputerDto> getComputerByName(String name) {
+        List<ComputerDto> computers = restClient.get()
                 .uri("/computer/get/name/{name}", name)
                 .retrieve()
                 .body(new ParameterizedTypeReference<>(){});
@@ -74,8 +74,8 @@ public class ComputerViewService {
         return computers;
     }
 
-    public List<Computer> getComputerByComputerCaseModel(String computerCaseModel) {
-        List<Computer> computers = restClient.get()
+    public List<ComputerDto> getComputerByComputerCaseModel(String computerCaseModel) {
+        List<ComputerDto> computers = restClient.get()
                 .uri("/computer/get/computerCaseModel/{computerCaseModel}", computerCaseModel)
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {
