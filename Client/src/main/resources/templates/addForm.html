@@ -5,11 +5,16 @@
     <title>Add computer</title>
 </head>
 <body>
-<h1>Add computer</h1>
-<form action="#" th:action="@{/addForm}" th:object="${computer}" method="post">
-    <input id="name" type="text" name="name" th:field="${computer.name}"/>
-    <input id="computerCaseModel" type="text" name="computerCaseModel" th:field="${computer.computerCaseModel}"/>
-    <input id="submit" type="submit" value="Add"/>
-</form>
+<div id="root">
+    <h1>Add computer</h1>
+    <form action="#" th:action="@{/addForm}" th:object="${computer}" method="post">
+        <input id="name" type="text" name="name" th:field="${computer.name}"/>
+        <input id="computerCaseModel" type="text" name="computerCaseModel" th:field="${computer.computerCaseModel}"/>
+        <input id="submit" type="submit" value="Add"/>
+    </form>
+    <form action="/view/all">
+        <input id="cancel" type="submit" value="Cancel">
+    </form>
+</div>
 </body>
 </html>
