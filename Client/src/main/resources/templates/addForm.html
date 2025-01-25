@@ -8,8 +8,8 @@
 <div id="root">
     <h1>Add computer</h1>
     <form action="#" th:action="@{/addForm}" th:object="${computer}" method="post">
-        <input id="name" type="text" name="name" th:field="${computer.name}"/>
-        <input id="computerCaseModel" type="text" name="computerCaseModel" th:field="${computer.computerCaseModel}"/>
+        <input id="name" type="text" name="name" th:field="${computer.name}" required>
+        <input id="computerCaseModel" type="text" name="computerCaseModel" th:field="${computer.computerCaseModel}" required/>
         <input id="submit" type="submit" value="Add"/>
     </form>
     <form action="/view/all">
