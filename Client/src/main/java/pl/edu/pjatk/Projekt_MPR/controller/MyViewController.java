@@ -40,8 +40,7 @@ public class MyViewController {
 
     @GetMapping("/updateForm/{id}")
     public String displayUpdateForm(Model model, @PathVariable Long id) {
-        ComputerDto computer = new ComputerDto();
-        computer.setId(id);
+        ComputerDto computer = computerViewService.getComputer(id);
         model.addAttribute("computer", computer);
         return "updateForm";
     }
