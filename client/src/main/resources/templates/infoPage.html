@@ -3,8 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Computer Info</title>
-</head>
+    <base th:href="@{http://localhost:8082/}">
 <body>
+<div id="root">
+  <h1>Computer info in PDF</h1>
 
+  <div class="buttons">
+    <a th:href="@{view/all}" class="button">Go back</a>
+
+    <a th:href="'data:application/pdf;base64,' + ${pdfBase64}"
+       download="computer_info.pdf" class="button">
+      Download
+    </a>
+  </div>
+
+  <iframe th:src="'data:application/pdf;base64,' + ${pdfBase64}" title="PDF"></iframe>
+
+</div>
 </body>
 </html>

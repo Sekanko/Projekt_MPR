@@ -20,6 +20,7 @@
             <td th:text="${computer.name}"></td>
             <td th:text="${computer.computerCaseModel}"></td>
             <td>
+                <a th:href="@{getPDF/{id}(id=${computer.id})}">PDF</a>
                 <a th:href="@{updateForm/{id}(id=${computer.id})}">edit</a>
                 <a th:href="@{deleteForm/{id}(id=${computer.id})}">delete</a>
             </td>

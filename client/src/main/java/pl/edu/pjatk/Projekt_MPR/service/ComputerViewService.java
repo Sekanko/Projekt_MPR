@@ -5,8 +5,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import pl.edu.pjatk.Projekt_MPR.exception.ComputerNoFoundException;
-import pl.edu.pjatk.Projekt_MPR.exception.ComputerTakenCalculatedIdException;
 import pl.edu.pjatk.Projekt_MPR.model.ComputerDto;
 
 import java.util.List;
@@ -26,10 +24,6 @@ public class ComputerViewService {
                 .retrieve()
                 .body(new ParameterizedTypeReference<>() {
                 });
-
-        if (computers == null) {
-            throw new ComputerNoFoundException();
-        }
 
         return computers;
     }
@@ -68,10 +62,6 @@ public class ComputerViewService {
                 .uri("/computer/get/name/{name}", name)
                 .retrieve()
                 .body(new ParameterizedTypeReference<>(){});
-
-        if (computers == null) {
-            throw new ComputerNoFoundException();
-        }
         return computers;
     }
 

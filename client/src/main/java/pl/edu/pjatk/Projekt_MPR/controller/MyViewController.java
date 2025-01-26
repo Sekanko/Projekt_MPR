@@ -97,7 +97,6 @@ public class MyViewController {
         var pdfInfo = computerViewService.getInfo(id);
         String pdfBase64 = Base64.getEncoder().encodeToString(pdfInfo);
         model.addAttribute("pdfBase64", pdfBase64);
-        model.addAttribute("id", id);
         return "infoPage";
     }
 
