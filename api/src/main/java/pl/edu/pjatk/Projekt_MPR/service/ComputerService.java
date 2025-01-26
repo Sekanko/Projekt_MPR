@@ -10,10 +10,7 @@ import pl.edu.pjatk.Projekt_MPR.model.Computer;
 import pl.edu.pjatk.Projekt_MPR.repository.ComputerRepository;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.*;
 
 @Service

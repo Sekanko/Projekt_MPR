@@ -14,7 +14,10 @@ import pl.edu.pjatk.Projekt_MPR.service.StringUtilsService;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,7 +43,7 @@ public class ComputerServiceTest {
         this.service.createComputer(computer);
 
         verify(stringUtilsService,times(2)).upper(any());
-        verify(computerRepository,times(4)).save(any());
+        verify(computerRepository,times(1)).save(any());
     }
 
 

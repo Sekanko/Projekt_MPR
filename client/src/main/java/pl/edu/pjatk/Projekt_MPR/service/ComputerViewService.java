@@ -1,18 +1,19 @@
 package pl.edu.pjatk.Projekt_MPR.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import pl.edu.pjatk.Projekt_MPR.exception.*;
+import pl.edu.pjatk.Projekt_MPR.exception.ComputerNoFoundException;
+import pl.edu.pjatk.Projekt_MPR.exception.ComputerTakenCalculatedIdException;
 import pl.edu.pjatk.Projekt_MPR.model.ComputerDto;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ComputerViewService {
-    @Autowired
     private final RestClient restClient;
 
     public ComputerViewService(RestClient restClient) {
@@ -33,13 +34,19 @@ public class ComputerViewService {
         return computers;
     }
 
-    public void createComputer(ComputerDto computer) {
-        restClient.post()
-                .uri("/computer")
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(computer)
-                .retrieve()
-                .toBodilessEntity();
+    public String createComputer(ComputerDto computer) {
+        try{
+            restClient.post()
+                    .uri("/computer")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(computer)
+                    .retrieve()
+                    .toBodilessEntity();
+            return "success";
+        } catch (Exception e){
+            return getMessageWithoutCodeFromException(e.getMessage());
+        }
+
     }
 
     public void deleteComputer(Long id) {
@@ -50,16 +57,10 @@ public class ComputerViewService {
     }
 
     public ComputerDto getComputer(Long id) {
-        ComputerDto computer = restClient.get()
+        return restClient.get()
                 .uri("/computer/get/id/{id}", id)
                 .retrieve()
                 .body(ComputerDto.class);
-
-        if (computer == null) {
-            throw new ComputerNoFoundException();
-        }
-
-        return computer;
     }
 
     public List<ComputerDto> getComputerByName(String name) {
@@ -81,18 +82,20 @@ public class ComputerViewService {
                 .body(new ParameterizedTypeReference<>() {
                 });
 
-        if (computers == null) {
-            throw new ComputerNoFoundException();
-        }
         return computers;
     }
 
-    public void patchComputer(Long id, Map<String, Object> patch) {
-        restClient.patch()
-                .uri("/computer/patch/{id}", id)
-                .body(patch)
-                .retrieve()
-                .toBodilessEntity();
+    public String patchComputer(Long id, Map<String, Object> patch) {
+        try {
+            restClient.patch()
+                    .uri("/computer/patch/{id}", id)
+                    .body(patch)
+                    .retrieve()
+                    .toBodilessEntity();
+            return "success";
+        } catch (Exception e){
+            return getMessageWithoutCodeFromException(e.getMessage());
+        }
     }
 
     public byte[] getInfo(Long id) {
@@ -100,5 +103,12 @@ public class ComputerViewService {
                 .uri("/computer/get/info/{id}", id)
                 .retrieve()
                 .body(new ParameterizedTypeReference<>(){});
+    }
+
+    private String getMessageWithoutCodeFromException(String exceptionMessage){
+        int start = exceptionMessage.indexOf('"') + 1;
+        int end = exceptionMessage.indexOf('"', start);
+
+        return exceptionMessage.substring(start, end);
     }
 }

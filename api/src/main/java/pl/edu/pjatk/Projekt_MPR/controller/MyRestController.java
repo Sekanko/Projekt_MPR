@@ -41,16 +41,17 @@ public class MyRestController {
     public ResponseEntity<byte[]> getInfo(@PathVariable Long id) {
         try{
             byte[] pdf = this.computerService.getInfo(id);
+            return new ResponseEntity<>(pdf, HttpStatus.CREATED);
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_PDF);
-            headers.setContentDisposition(ContentDisposition.builder("inline")
-                    .filename("computer_info_" + id + ".pdf")
-                    .build());
-
-            return ResponseEntity.ok()
-                    .headers(headers)
-                    .body(pdf);
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentType(MediaType.APPLICATION_PDF);
+//            headers.setContentDisposition(ContentDisposition.builder("inline")
+//                    .filename("computer_info_" + id + ".pdf")
+//                    .build());
+//
+//            return ResponseEntity.ok()
+//                    .headers(headers)
+//                    .body(pdf);
         } catch (Exception e) {
             throw new ComputerPDFInfoWasntCreatedException();
         }

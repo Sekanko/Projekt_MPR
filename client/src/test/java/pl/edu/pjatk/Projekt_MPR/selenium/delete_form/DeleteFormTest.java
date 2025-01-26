@@ -4,11 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import pl.edu.pjatk.Projekt_MPR.selenium.ViewAllPage;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
