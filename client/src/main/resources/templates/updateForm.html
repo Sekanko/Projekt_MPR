@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Update Computer</title>
+    <link rel="stylesheet" href="/commonStyle.css">
+    <link rel="stylesheet" href="/updateStyle.css">
 </head>
-<body>
+<body class="fadeOut">
 <div id="root">
     <h1>Update computer</h1>
     <h2 class="error" th:if="${session.message != null}" th:text="${session.message}"></h2>
     <form action="#" th:action="@{/updateForm(id=${computer.getId()})}" th:object="${computer}" method="post">
+        <label for="name">Name:</label>
         <input id="name" type="text" name="name" th:field="${computer.name}" required/>
+        <label for="computerCaseModel">Computer case model:</label>
         <input id="computerCaseModel" type="text" name="computerCaseModel" th:field="${computer.computerCaseModel}" required/>
         <input id="submit" type="submit" value="Update"/>
     </form>
@@ -17,5 +21,6 @@
         <input id="cancel" type="submit" value="Cancel">
     </form>
 </div>
+<script src="/smoothTransition.js"></script>
 </body>
 </html>

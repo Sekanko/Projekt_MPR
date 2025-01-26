@@ -13,7 +13,7 @@
     <form action="#" th:action="@{/addForm}" th:object="${computer}" method="post">
         <label for="name">Name:</label>
         <input id="name" type="text" name="name" th:field="${computer.name}" required>
-        <label for="computerCaseModel">Computercase Model:</label>
+        <label for="computerCaseModel">Computer case model:</label>
         <input id="computerCaseModel" type="text" name="computerCaseModel" th:field="${computer.computerCaseModel}" required/>
         <input id="submit" type="submit" value="Add"/>
     </form>

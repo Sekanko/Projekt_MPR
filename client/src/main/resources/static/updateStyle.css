@@ -41,6 +41,7 @@ input[type="text"] {
     background: transparent;
     color: #e8e8e8;
     transition: border-color 0.3s ease;
+
 }
 
 input[type="text"]:focus {
