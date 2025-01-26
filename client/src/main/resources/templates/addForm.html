@@ -3,19 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Add computer</title>
+    <link rel="stylesheet" href="/commonStyle.css">
+    <link rel="stylesheet" href="/addStyle.css">
 </head>
-<body>
+<body class="fadeOut">
 <div id="root">
     <h1>Add computer</h1>
     <h2 class="error" th:if="${session.message != null}" th:text="${session.message}"></h2>
     <form action="#" th:action="@{/addForm}" th:object="${computer}" method="post">
+        <label for="name">Name:</label>
         <input id="name" type="text" name="name" th:field="${computer.name}" required>
+        <label for="computerCaseModel">Computercase Model:</label>
         <input id="computerCaseModel" type="text" name="computerCaseModel" th:field="${computer.computerCaseModel}" required/>
         <input id="submit" type="submit" value="Add"/>
     </form>
     <form action="/view/all">
-        <input id="cancel" type="submit" value="Cancel">
+        <input id="cancel" type="submit" value="Cancel" class="">
     </form>
 </div>
+<script src="/smoothTransition.js"></script>
 </body>
 </html>

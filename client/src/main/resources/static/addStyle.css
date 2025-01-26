@@ -1,0 +1,73 @@
+#root {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background: rgba(30, 30, 30, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 255, 218, 0.2);
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    color: #00fffc;
+    text-align: center;
+    text-shadow: 0 0 20px rgba(0, 255, 252, 0.8);
+}
+
+.error {
+    color: #ff4747;
+    text-align: center;
+    margin: 15px 0;
+    font-weight: bold;
+}
+
+form {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+    font-size: 1.2em;
+}
+
+input[type="text"] {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 2px solid #00fffc;
+    border-radius: 5px;
+    background: transparent;
+    color: #e8e8e8;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus {
+    border-color: #00cc66;
+    outline: none;
+}
+
+input[type="submit"] {
+    background-color: #70ded9;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+input[type="submit"]:hover {
+    background-color: #00cc66;
+}
+
+#cancel {
+    background-color: #ff4747;
+    transition: background-color 0.3s ease;
+}
+
+#cancel:hover {
+    background-color: #cc0000;
+}
