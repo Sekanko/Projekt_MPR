@@ -4,28 +4,34 @@
     <meta charset="UTF-8">
     <title>Computers</title>
     <base th:href="@{http://localhost:8082/}">
+    <link rel="stylesheet" href="/viewAllStyle.css">
 </head>
 <body>
 <div id="root">
-    <h1>All my computers:</h1>
-    <a th:href="@{addForm}">Add computer</a>
-    <table>
-        <tr>
-            <td>ID</td>
-            <td>Name</td>
-            <td>Computer case model</td>
-        </tr>
-        <tr th:each="computer : ${computers}">
-            <td th:text="${computer.id}"></td>
-            <td th:text="${computer.name}"></td>
-            <td th:text="${computer.computerCaseModel}"></td>
-            <td>
-                <a th:href="@{getPDF/{id}(id=${computer.id})}">PDF</a>
-                <a th:href="@{updateForm/{id}(id=${computer.id})}">edit</a>
-                <a th:href="@{deleteForm/{id}(id=${computer.id})}">delete</a>
-            </td>
-        </tr>
-    </table>
+    <h1>Computers</h1>
+    <div id="content">
+        <script src="/intro.js"></script>
+        <a id="aAdd" th:href="@{addForm}">Add computer</a>
+        <table>
+            <tr>
+                <td>ID</td>
+                <td>Name</td>
+                <td>Computer case model</td>
+                <td>Options:</td>
+            </tr>
+            <tr th:each="computer : ${computers}">
+                <td th:text="${computer.id}"></td>
+                <td th:text="${computer.name}"></td>
+                <td th:text="${computer.computerCaseModel}"></td>
+                <td class="options">
+                    <a class="aPdf" th:href="@{getPDF/{id}(id=${computer.id})}">PDF</a>
+                    <a class="aEdit" th:href="@{updateForm/{id}(id=${computer.id})}">edit</a>
+                    <a class="aDelete" th:href="@{deleteForm/{id}(id=${computer.id})}">delete</a>
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
+
 </body>
 </html>

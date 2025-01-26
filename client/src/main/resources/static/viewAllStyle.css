@@ -1,0 +1,164 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Orbitron', sans-serif;
+    line-height: 1.5;
+    background-color: #0c0c0c;
+    color: #e8e8e8;
+}
+
+#root {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    background: rgba(30, 30, 30, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 255, 218, 0.2);
+}
+#content{
+    filter: brightness(0.2);
+    transition: filter 3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 3em;
+    color: #00fffc;
+    text-align: center;
+    text-shadow: 0 0 20px rgba(0, 255, 252, 0.8);
+}
+h1 {
+    font-family: 'Arial', sans-serif;
+    font-size: 3em;
+    color: black;
+    text-shadow: none;
+    animation: intro 5s forwards;
+}
+
+.options{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+@keyframes intro {
+    0% {
+        color: black;
+        text-shadow: none;
+    }
+    20% {
+        color: #00ffff;
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.7), 0 0 20px rgba(0, 255, 255, 0.5);
+        filter: brightness(0.8);
+
+    }
+    45% {
+        color: black;
+        text-shadow: none;
+    }
+    60% {
+        color: #00ffff;
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.7), 0 0 20px rgba(0, 255, 255, 0.5);
+        filter: brightness(0.6);
+    }
+    90% {
+        color: black;
+        text-shadow: none;
+        transition: text-shadow 0s ease, color 0s ease;
+    }
+    100% {
+        color: #00ffff;
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.7), 0 0 20px rgba(0, 255, 255, 0.5);
+        transition: text-shadow 3s ease, color 3s ease;
+    }
+}
+
+#aAdd{
+    align-self: center;
+}
+
+.disable{
+    pointer-events: none;
+}
+
+a {
+    text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    padding: 8px 15px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    color: #fff;
+    background-color: transparent;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+a:hover {
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+.aDelete {
+    color: #ff4747;
+    border-color: #ff4747;
+    text-shadow: 0 0 10px #ff4747, 0 0 20px #ff4747;
+    box-shadow: 0 0 8px rgba(255, 71, 71, 0.6), 0 0 20px rgba(255, 71, 71, 0.3);
+}
+
+.aDelete:hover {
+    background-color: #ff4747;
+    text-shadow: 0 0 20px #ff4747, 0 0 30px #ff4747, 0 0 40px #ff0000;
+    border-color: #ff0000;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.7), 0 0 25px rgba(255, 0, 0, 0.5), 0 0 40px rgba(255, 0, 0, 0.3);
+}
+
+.aEdit {
+    color: #00ff7f;
+    border-color: #00ff7f;
+    text-shadow: 0 0 10px #00ff7f, 0 0 20px #00ff7f;
+    box-shadow: 0 0 8px rgba(0, 255, 127, 0.6), 0 0 20px rgba(0, 255, 127, 0.3);
+}
+
+.aEdit:hover {
+    background-color: #00ff7f;
+    text-shadow: 0 0 20px #00ff7f, 0 0 30px #00ff7f, 0 0 40px #00cc66;
+    border-color: #00cc66;
+    box-shadow: 0 0 10px rgba(0, 200, 100, 0.7), 0 0 25px rgba(0, 200, 100, 0.5), 0 0 40px rgba(0, 200, 100, 0.3);
+}
+
+.aPdf {
+    color: #1e90ff;
+    border-color: #1e90ff;
+    text-shadow: 0 0 10px #1e90ff, 0 0 20px #1e90ff;
+    box-shadow: 0 0 8px rgba(30, 144, 255, 0.6), 0 0 20px rgba(30, 144, 255, 0.3);
+}
+
+.aPdf:hover {
+    background-color: #1e90ff;
+    text-shadow: 0 0 20px #1e90ff, 0 0 30px #1e90ff, 0 0 40px #1c86ee;
+    border-color: #1c86ee;
+    box-shadow: 0 0 10px rgba(30, 120, 210, 0.7), 0 0 25px rgba(30, 120, 210, 0.5), 0 0 40px rgba(30, 120, 210, 0.3);
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+td {
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: left;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.05);
+}
