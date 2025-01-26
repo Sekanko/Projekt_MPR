@@ -1,17 +1,47 @@
 const smoothTransition = (event, url) => {
     event.preventDefault();
-    document.body.classList.remove('loaded')
+
+    document.body.classList.remove('loaded');
     document.body.classList.add('fadeOut');
+
     const form = event.target.closest('form');
 
     setTimeout(() => {
         if (form) {
-            form.submit();
+            const formData = new FormData(form);
+            const actionUrl = form.getAttribute('action');
+
+            if (form.getAttribute('method').toUpperCase() === "GET"){
+                form.submit();
+            } else {
+                fetch(actionUrl, {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.href = response.url;
+                        } else {
+                            console.error('Server error:', response.status);
+                            document.body.classList.remove('fadeOut');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        document.body.classList.remove('fadeOut');
+                    });
+            }
+
         } else {
             window.location.href = url;
         }
     }, 1000);
 };
+
+const apear = () => {
+    document.body.classList.remove('fadeOut')
+    document.body.classList.add('loaded');
+}
 
 const links = document.querySelectorAll('a');
 const forms = document.querySelectorAll('form');
@@ -29,6 +59,5 @@ forms.forEach(form => {
 });
 
 window.addEventListener('load', () => {
-    document.body.classList.remove('fadeOut')
-    document.body.classList.add('loaded');
+    apear()
 });

@@ -13,6 +13,10 @@
     flex-direction: column;
 }
 
+a{
+    animation: intro 4s forwards;
+}
+
 h1 {
     margin-bottom: 20px;
     font-size: 3em;
@@ -20,7 +24,7 @@ h1 {
     font-family: 'Arial', sans-serif;
     color: black;
     text-shadow: none;
-    animation: intro 3s forwards;
+    animation: intro 4s forwards;
 }
 
 .options{
@@ -33,10 +37,10 @@ h1 {
         color: black;
         text-shadow: none;
     }
-    20% {
+    35% {
         color: #00ffff;
         text-shadow: 0 0 10px rgba(0, 255, 255, 0.7), 0 0 20px rgba(0, 255, 255, 0.5);
-        filter: brightness(0.8);
+        filter: brightness(0.5);
 
     }
     45% {
@@ -46,7 +50,7 @@ h1 {
     60% {
         color: #00ffff;
         text-shadow: 0 0 10px rgba(0, 255, 255, 0.7), 0 0 20px rgba(0, 255, 255, 0.5);
-        filter: brightness(0.6);
+        filter: brightness(0.3);
     }
     90% {
         color: black;
@@ -87,7 +91,6 @@ a:hover {
 }
 
 .aDelete {
-    color: #ff4747;
     border-color: #ff4747;
     text-shadow: 0 0 10px #ff4747, 0 0 20px #ff4747;
     box-shadow: 0 0 8px rgba(255, 71, 71, 0.6), 0 0 20px rgba(255, 71, 71, 0.3);
@@ -101,21 +104,19 @@ a:hover {
 }
 
 .aEdit {
-    color: #00ff7f;
     border-color: #00ff7f;
     text-shadow: 0 0 10px #00ff7f, 0 0 20px #00ff7f;
     box-shadow: 0 0 8px rgba(0, 255, 127, 0.6), 0 0 20px rgba(0, 255, 127, 0.3);
 }
 
 .aEdit:hover {
-    background-color: #00ff7f;
+    background-color: #00c859;
     text-shadow: 0 0 20px #00ff7f, 0 0 30px #00ff7f, 0 0 40px #00cc66;
     border-color: #00cc66;
     box-shadow: 0 0 10px rgba(0, 200, 100, 0.7), 0 0 25px rgba(0, 200, 100, 0.5), 0 0 40px rgba(0, 200, 100, 0.3);
 }
 
 .aPdf {
-    color: #1e90ff;
     border-color: #1e90ff;
     text-shadow: 0 0 10px #1e90ff, 0 0 20px #1e90ff;
     box-shadow: 0 0 8px rgba(30, 144, 255, 0.6), 0 0 20px rgba(30, 144, 255, 0.3);
