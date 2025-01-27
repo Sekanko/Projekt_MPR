@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <title>Computer Info</title>
     <base th:href="@{http://localhost:8082/}">
-<body>
+    <link rel="stylesheet" href="/commonStyle.css">
+    <link rel="stylesheet" href="/infoStyle.css">
+<body class="fadeOut">
 <div id="root">
   <h1>Computer info in PDF</h1>
 
   <div class="buttons">
-    <a th:href="@{view/all}" class="button">Go back</a>
+    <a id="goBack" th:href="@{view/all}" >Go back</a>
 
-    <a th:href="'data:application/pdf;base64,' + ${pdfBase64}"
-       download="computer_info.pdf" class="button">
+    <a id="download" th:href="'data:application/pdf;base64,' + ${pdfBase64}"
+       download="computer_info.pdf" >
       Download
     </a>
   </div>
@@ -20,5 +22,6 @@
   <iframe th:src="'data:application/pdf;base64,' + ${pdfBase64}" title="PDF"></iframe>
 
 </div>
+<script src="/smoothTransition.js"></script>
 </body>
 </html>

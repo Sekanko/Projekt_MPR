@@ -3,7 +3,6 @@ package pl.edu.pjatk.Projekt_MPR.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import pl.edu.pjatk.Projekt_MPR.exception.ComputerPDFInfoWasntCreatedException;
 import pl.edu.pjatk.Projekt_MPR.model.Computer;
 import pl.edu.pjatk.Projekt_MPR.service.ComputerService;
 
@@ -43,17 +42,8 @@ public class MyRestController {
             byte[] pdf = this.computerService.getInfo(id);
             return new ResponseEntity<>(pdf, HttpStatus.CREATED);
 
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.setContentType(MediaType.APPLICATION_PDF);
-//            headers.setContentDisposition(ContentDisposition.builder("inline")
-//                    .filename("computer_info_" + id + ".pdf")
-//                    .build());
-//
-//            return ResponseEntity.ok()
-//                    .headers(headers)
-//                    .body(pdf);
         } catch (Exception e) {
-            throw new ComputerPDFInfoWasntCreatedException();
+            throw new RuntimeException();
         }
     }
 
@@ -66,12 +56,12 @@ public class MyRestController {
     @DeleteMapping("computer/delete/{id}")
     public ResponseEntity<Computer> delete(@PathVariable Long id){
         this.computerService.deleteComputer(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @PatchMapping("computer/patch/{id}")
     public ResponseEntity<Computer> patch(@PathVariable Long id, @RequestBody Map<String, Object> patch){
         this.computerService.patchComputer(id, patch);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

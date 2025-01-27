@@ -128,7 +128,7 @@ public class ComputerService {
 
             return result.toByteArray();
         } catch (Exception e){
-            throw new ComputerPDFInfoWasntCreatedException();
+            throw new RuntimeException();
         }
     }
 

@@ -1,4 +1,7 @@
 const smoothTransition = (event, url) => {
+    if (event.target.id === 'download'){
+        return;
+    }
     event.preventDefault();
 
     document.body.classList.remove('loaded');

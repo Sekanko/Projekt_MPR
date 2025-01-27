@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import pl.edu.pjatk.Projekt_MPR.exception.ComputerFieldDoesntExistsException;
 import pl.edu.pjatk.Projekt_MPR.exception.ComputerNewFieldValueIsEmptyException;
 import pl.edu.pjatk.Projekt_MPR.exception.ComputerNoFoundException;
+import pl.edu.pjatk.Projekt_MPR.exception.ComputerTakenCalculatedIdException;
 import pl.edu.pjatk.Projekt_MPR.model.Computer;
 import pl.edu.pjatk.Projekt_MPR.repository.ComputerRepository;
 import pl.edu.pjatk.Projekt_MPR.service.ComputerService;
@@ -14,10 +15,7 @@ import pl.edu.pjatk.Projekt_MPR.service.StringUtilsService;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -148,6 +146,9 @@ public class ComputerServiceTest {
         when(computerRepository.findById(1L)).thenReturn(Optional.of(computer));
         when(stringUtilsService.upper("tg")).thenReturn("TG");
         when(stringUtilsService.upper("ctg")).thenReturn("CTG");
+        when(stringUtilsService.upper("sin")).thenReturn("SIN");
+        when(stringUtilsService.upper("cos")).thenReturn("COS");
+
         Map<String, Object> testValues = new HashMap<>();
 
         testValues.put("name", null);
@@ -158,6 +159,8 @@ public class ComputerServiceTest {
 
         testValues.put("car", "Nissan");
         assertThrows(ComputerFieldDoesntExistsException.class, () -> this.service.patchComputer(1L, testValues));
+
+
     }
 
     @Test
@@ -170,18 +173,18 @@ public class ComputerServiceTest {
 
     @Test
     public void everyComputerNoFoundException(){
-        var exception = ComputerNoFoundException.class;
+        var noFoundExceptionClass = ComputerNoFoundException.class;
         //delete
         when(computerRepository.existsById(1L)).thenReturn(false);
-        assertThrows(exception, () -> this.service.deleteComputer(1L));
+        assertThrows(noFoundExceptionClass, () -> this.service.deleteComputer(1L));
         //getComputer
-        assertThrows(exception, () -> this.service.getComputer(1L));
+        assertThrows(noFoundExceptionClass, () -> this.service.getComputer(1L));
         //getComputerByName
-        assertThrows(exception, () -> this.service.getComputerByName("sin"));
+        assertThrows(noFoundExceptionClass, () -> this.service.getComputerByName("sin"));
         //getComputerByComputerCaseModel
-        assertThrows(exception, () -> this.service.getComputerByComputerCaseModel("cos"));
+        assertThrows(noFoundExceptionClass, () -> this.service.getComputerByComputerCaseModel("cos"));
         //patchComputer
-        assertThrows(exception, () -> this.service.patchComputer(1L, null));
+        assertThrows(noFoundExceptionClass, () -> this.service.patchComputer(1L, null));
 
     }
 

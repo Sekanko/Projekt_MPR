@@ -28,8 +28,4 @@ public class ComputerExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleNewFieldValueIsEmpty(RuntimeException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
-    @ExceptionHandler(value = ComputerPDFInfoWasntCreatedException.class)
-    public ResponseEntity<Object> handlePDFInfoWasntCreatedException(RuntimeException ex){
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NO_CONTENT);
-    }
 }
