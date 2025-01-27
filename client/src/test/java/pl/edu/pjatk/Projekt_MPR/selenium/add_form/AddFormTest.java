@@ -28,15 +28,15 @@ public class AddFormTest {
                 .fillInComputerCaseModelInput("Cos");
 
         ViewAllPage viewAllPage = addFormPage.submitForm();
-        assertEquals("Add computer", viewAllPage.getHeaderText());
+        assertEquals("Computers", viewAllPage.getHeaderText());
 
         List<WebElement> lastComputerFields =
                 webDriver.findElements(By.tagName("tr"))
                         .getLast()
                         .findElements(By.tagName("td"));
 
-        assertEquals("Sin", lastComputerFields.get(0).getText());
-        assertEquals("Cos", lastComputerFields.get(1).getText());
+        assertEquals("Sin", lastComputerFields.get(1).getText());
+        assertEquals("Cos", lastComputerFields.get(2).getText());
 
     }
 }

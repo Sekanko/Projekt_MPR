@@ -122,4 +122,20 @@ public class MyViewControllerTest {
         assertEquals("redirect:/updateForm/1", returnValue);
     }
 
+    @Test
+    public void deleteComputerGetMethod() {
+        String returnValue = this.myViewController.deleteComputer(model, 1L);
+        verify(model).addAttribute(anyString(), any());
+        assertEquals("deleteForm", returnValue);
+    }
+
+    @Test
+    public void deleteComputerPostMethod() {
+        ComputerDto computerDto = new ComputerDto();
+
+        String returnValue = this.myViewController.submitDeleteForm(1L);
+        verify(computerViewService, times(1)).deleteComputer(1L);
+        assertEquals("redirect:/view/all", returnValue);
+    }
+
 }

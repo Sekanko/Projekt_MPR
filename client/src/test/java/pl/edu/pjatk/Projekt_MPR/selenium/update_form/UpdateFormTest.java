@@ -24,7 +24,6 @@ public class UpdateFormTest {
     public void updateAllComputerFields() {
         UpdateFormPage updateFormPage = new UpdateFormPage(webDriver);
         updateFormPage.open()
-                .fillIdInput("1")
                 .fillInNameInput("Tang")
                 .fillInComputerCaseModelInput("Ens");
 
@@ -41,7 +40,6 @@ public class UpdateFormTest {
     public void updateName(){
         UpdateFormPage updateFormPage = new UpdateFormPage(webDriver);
         updateFormPage.open()
-                .fillIdInput("1")
                 .fillInNameInput("Cotang")
                 .fillInComputerCaseModelInput("");
 
@@ -57,7 +55,6 @@ public class UpdateFormTest {
     public void updateComputerCaseModel(){
         UpdateFormPage updateFormPage = new UpdateFormPage(webDriver);
         updateFormPage.open()
-                .fillIdInput("1")
                 .fillInNameInput("")
                 .fillInComputerCaseModelInput("Lu");
 

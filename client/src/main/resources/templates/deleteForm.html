@@ -25,7 +25,7 @@
     </table>
     <div id="formContainer">
         <form action="#" th:action="@{/deleteForm/{id}(id=${computer.getId()})} "th:method="post">
-            <input type="submit" value="Confirm"/>
+            <input id="submit" type="submit" value="Confirm"/>
         </form>
         <form action="/view/all" method="get">
             <input id="cancel" type="submit" value="Cancel">
