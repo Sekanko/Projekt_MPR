@@ -19,8 +19,6 @@ public class DeleteFormTest {
     @Test
     public void testDeleteForm() {
         DeleteFormPage deleteFormPage = new DeleteFormPage(webDriver);
-        deleteFormPage.open()
-                .fillIdInput("1");
 
         ViewAllPage viewAllPage = deleteFormPage.submitForm();
         assertEquals("All my computers:", viewAllPage.getHeaderText());

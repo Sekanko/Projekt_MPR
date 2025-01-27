@@ -28,7 +28,7 @@ public class AddFormTest {
                 .fillInComputerCaseModelInput("Cos");
 
         ViewAllPage viewAllPage = addFormPage.submitForm();
-        assertEquals("All my computers:", viewAllPage.getHeaderText());
+        assertEquals("Add computer", viewAllPage.getHeaderText());
 
         List<WebElement> lastComputerFields =
                 webDriver.findElements(By.tagName("tr"))

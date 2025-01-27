@@ -20,7 +20,7 @@ public class UpdateFormPage extends AbstractPageWithComputerFields {
 
     @Override
     public UpdateFormPage open(){
-        this.webDriver.get("http://localhost:8080/updateForm");
+        this.webDriver.get("http://localhost:8082/updateForm");
         return this;
     }
 }

@@ -20,7 +20,7 @@ public class DeleteFormPage extends AbstractPostPage {
 
     @Override
     public DeleteFormPage open() {
-        webDriver.get("http://localhost:8080/deleteForm");
+        webDriver.get("http://localhost:8082/deleteForm");
         return this;
     }
 }

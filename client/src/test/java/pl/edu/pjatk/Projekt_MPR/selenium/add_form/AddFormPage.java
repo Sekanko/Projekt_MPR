@@ -11,7 +11,7 @@ public class AddFormPage extends AbstractPageWithComputerFields {
 
     @Override
     public AddFormPage open(){
-        this.webDriver.get("http://localhost:8080/addForm");
+        this.webDriver.get("http://localhost:8082/addForm");
         return this;
     }
 

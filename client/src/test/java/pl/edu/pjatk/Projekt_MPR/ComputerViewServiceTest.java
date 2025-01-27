@@ -13,7 +13,9 @@ import org.springframework.web.client.RestClient;
 import pl.edu.pjatk.Projekt_MPR.model.ComputerDto;
 import pl.edu.pjatk.Projekt_MPR.service.ComputerViewService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -38,7 +40,7 @@ public class ComputerViewServiceTest {
                 .andExpect(MockRestRequestMatchers.method(HttpMethod.POST))
                 .andRespond(MockRestResponseCreators.withStatus(HttpStatus.CREATED));
 
-        computerViewService.createComputer(computer);
+        assertEquals("success", computerViewService.createComputer(computer));
 
         customizer.getServer().verify();
     }
@@ -106,5 +108,41 @@ public class ComputerViewServiceTest {
         customizer.getServer().verify();
     }
 
+    @Test
+    public void getAllComputers(){
+        customizer.getServer()
+                .expect(MockRestRequestMatchers.requestTo("/computer/all"))
+                .andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
+                .andRespond(MockRestResponseCreators.withSuccess("""
+                        [
+                        {"id":1 ,"name":"sin", "computerCaseModel":"cos", "calcId":133},
+                        {"id":2 ,"name":"tg", "computerCaseModel":"ctg", "calcId":200}
+                        ]
+                        """, MediaType.APPLICATION_JSON));
+
+        List<ComputerDto> computers = computerViewService.getAll();
+        assertEquals(2,computers.size());
+        assertEquals("sin",computers.get(0).getName());
+        assertEquals("tg",computers.get(1).getName());
+        assertEquals("cos",computers.get(0).getComputerCaseModel());
+        assertEquals("ctg",computers.get(1).getComputerCaseModel());
+        customizer.getServer().verify();
+    }
+
+    @Test
+    public void updateComputer(){
+        Map<String, Object> newFields = new HashMap<>();
+        newFields.put("name", "sin");
+        newFields.put("computerCaseModel", "cos");
+        Long id = 1L;
+
+        customizer.getServer()
+                .expect(MockRestRequestMatchers.requestTo("/computer/patch/1"))
+                .andExpect(MockRestRequestMatchers.method(HttpMethod.PATCH))
+                .andRespond(MockRestResponseCreators.withStatus(HttpStatus.ACCEPTED));
+
+        assertEquals("success",computerViewService.patchComputer(id, newFields));
+        customizer.getServer().verify();
+    }
 
 }
