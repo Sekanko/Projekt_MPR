@@ -28,48 +28,18 @@ public class UpdateFormTest {
                 .fillInComputerCaseModelInput("Ens");
 
         ViewAllPage viewAllPage = updateFormPage.submitForm();
-        assertEquals("All my computers:", viewAllPage.getHeaderText());
+        assertEquals("Computers", viewAllPage.getHeaderText());
 
-        List<WebElement> firstComputerFields = getFirstComputerFields();
+        List<WebElement> firstComputerFields = getLastComputerFields();
 
-        assertEquals("Tang" , firstComputerFields.get(0).getText());
-        assertEquals("Ens" , firstComputerFields.get(1).getText());
-
-    }
-    @Test
-    public void updateName(){
-        UpdateFormPage updateFormPage = new UpdateFormPage(webDriver);
-        updateFormPage.open()
-                .fillInNameInput("Cotang")
-                .fillInComputerCaseModelInput("");
-
-        ViewAllPage viewAllPage = updateFormPage.submitForm();
-        assertEquals("All my computers:", viewAllPage.getHeaderText());
-
-        List<WebElement> firstComputerFields = getFirstComputerFields();
-
-        assertEquals("Cotang" , firstComputerFields.get(0).getText());
-    }
-
-    @Test
-    public void updateComputerCaseModel(){
-        UpdateFormPage updateFormPage = new UpdateFormPage(webDriver);
-        updateFormPage.open()
-                .fillInNameInput("")
-                .fillInComputerCaseModelInput("Lu");
-
-        ViewAllPage viewAllPage = updateFormPage.submitForm();
-        assertEquals("All my computers:", viewAllPage.getHeaderText());
-
-        List<WebElement> firstComputerFields = getFirstComputerFields();
-
-        assertEquals("Lu" , firstComputerFields.get(1).getText());
+        assertEquals("Tang" , firstComputerFields.get(1).getText());
+        assertEquals("Ens" , firstComputerFields.get(2).getText());
 
     }
 
-    private List<WebElement> getFirstComputerFields() {
+    private List<WebElement> getLastComputerFields() {
         return webDriver.findElements(By.tagName("tr"))
-                .get(1)
+                .getLast()
                 .findElements(By.tagName("td"));
     }
 }

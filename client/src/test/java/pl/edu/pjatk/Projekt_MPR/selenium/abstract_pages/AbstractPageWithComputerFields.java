@@ -15,11 +15,13 @@ public abstract class AbstractPageWithComputerFields extends AbstractPostPage {
     }
 
     public AbstractPageWithComputerFields fillInNameInput(String name){
+        this.nameInput.clear();
         this.nameInput.sendKeys(name);
         return this;
     }
 
     public AbstractPageWithComputerFields fillInComputerCaseModelInput(String computerCaseModel){
+        this.computerCaseModelInput.clear();
         this.computerCaseModelInput.sendKeys(computerCaseModel);
         return this;
     }
