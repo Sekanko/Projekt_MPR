@@ -27,6 +27,36 @@ dependencies {
 
 }
 
+def isPageAvailable(String urlString) {
+	try {
+		def connection = new URL(urlString).openConnection()
+		connection.setConnectTimeout(1000)
+		connection.setReadTimeout(1000)
+		connection.connect()
+		return connection instanceof HttpURLConnection && connection.responseCode < 500
+	} catch (Exception e) {
+		return false
+	}
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
+	doFirst {
+		def url = 'http://localhost:8091/computer/all'
+		def connection = new URL(url).openConnection()
+		connection.setRequestMethod("GET")
+		def responseCode = connection.getResponseCode()
+
+		if (responseCode != 200) {
+			enabled = false
+			println "API is not reachable. Skipping tests."
+		}
+
+		def available = isPageAvailable('http://localhost:8092/view/all')
+		if (!available) {
+			println "Page is not available"
+			enabled = false
+		}
+	}
+
 }

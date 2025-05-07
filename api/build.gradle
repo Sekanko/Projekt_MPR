@@ -25,6 +25,8 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	//https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox
 	implementation("org.apache.pdfbox:pdfbox:2.0.1")
+	testImplementation 'com.h2database:h2:2.2.224'
+	runtimeOnly 'com.h2database:h2:2.2.224'
 }
 
 tasks.named('test') {

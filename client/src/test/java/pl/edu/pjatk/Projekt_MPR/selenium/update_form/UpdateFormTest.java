@@ -22,18 +22,21 @@ public class UpdateFormTest {
 
     @Test
     public void updateAllComputerFields() {
+
+        String name = "Not taken value";
+        String computerCaseModel = "Not taken value";
         UpdateFormPage updateFormPage = new UpdateFormPage(webDriver);
         updateFormPage.open()
-                .fillInNameInput("Tang")
-                .fillInComputerCaseModelInput("Ens");
+                .fillInNameInput(name)
+                .fillInComputerCaseModelInput(computerCaseModel);
 
         ViewAllPage viewAllPage = updateFormPage.submitForm();
         assertEquals("Computers", viewAllPage.getHeaderText());
 
         List<WebElement> firstComputerFields = getLastComputerFields();
 
-        assertEquals("Tang" , firstComputerFields.get(1).getText());
-        assertEquals("Ens" , firstComputerFields.get(2).getText());
+        assertEquals(name , firstComputerFields.get(1).getText());
+        assertEquals(computerCaseModel , firstComputerFields.get(2).getText());
 
     }
 

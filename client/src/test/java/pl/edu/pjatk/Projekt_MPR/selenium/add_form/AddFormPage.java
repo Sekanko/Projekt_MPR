@@ -1,6 +1,7 @@
 package pl.edu.pjatk.Projekt_MPR.selenium.add_form;
 
 import org.openqa.selenium.WebDriver;
+import pl.edu.pjatk.Projekt_MPR.selenium.SharedValues;
 import pl.edu.pjatk.Projekt_MPR.selenium.abstract_pages.AbstractPageWithComputerFields;
 
 public class AddFormPage extends AbstractPageWithComputerFields {
@@ -11,7 +12,7 @@ public class AddFormPage extends AbstractPageWithComputerFields {
 
     @Override
     public AddFormPage open(){
-        this.webDriver.get("http://localhost:8082/addForm");
+        this.webDriver.get(SharedValues.BASE_URL + "addForm");
         return this;
     }
 

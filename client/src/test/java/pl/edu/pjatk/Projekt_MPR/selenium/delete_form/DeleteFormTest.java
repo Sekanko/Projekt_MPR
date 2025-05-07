@@ -9,6 +9,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pl.edu.pjatk.Projekt_MPR.selenium.SharedValues;
 import pl.edu.pjatk.Projekt_MPR.selenium.ViewAllPage;
 
 import java.time.Duration;
@@ -27,7 +28,7 @@ public class DeleteFormTest {
     public void testDeleteForm() {
         DeleteFormPage deleteFormPage = new DeleteFormPage(webDriver);
 
-        webDriver.get("http://localhost:8082/view/all");
+        webDriver.get(SharedValues.BASE_URL + "view/all");
 
         WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.tagName("tr")));
