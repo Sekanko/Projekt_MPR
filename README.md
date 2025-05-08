@@ -1,7 +1,7 @@
 # Project MPR
-## Welcome to my unnamed project 😅
+## Introducing: Computer Table Manager 💼
  
-### 📖 About the project
+### 📖 Background
 This was my project for the "Programming Methods" class.
 
 Idea is straightforward: you manage a list of computers with the ability to
